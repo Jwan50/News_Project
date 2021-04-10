@@ -3,12 +3,12 @@ import firebase_admin
 from firebase_admin import credentials, firestore, storage
 
 
-def audio_to_Firestorage(fieName):
+def audio_to_Firestorage(fileName):
     cred = credentials.Certificate(
-        "C:/Users\gwan1\Desktop\Pycharm workspace\\NewsProject-Scraper\serviceAccountKey.json")
+        "C:/Users\\gwan1\\PycharmProjects\\News_Project\\serviceAccountKey.json")
     firebase_admin.initialize_app(cred, {'storageBucket': 'the-news-project.appspot.com'})
     db = firestore.client()
-    store = firebase.Storage
+    store = firebase.Storage()
     audios = store.list_files()
 
     for audio in audios:

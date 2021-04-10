@@ -96,7 +96,6 @@ def scrap_P3(scrape_back_days, runType):
                             audioName = artist + ' - ' + title + '.mp3'
                             fileName = str(audioName.lower())
                             try:
-
                                 audio_to_Firestorage(fileName)
                                 playlist_to_Fir(title, artist, dt, fileName, data_name)
                                 print('played at: ', dt, 'artist: ' + artist + ' -- ', 'title: ' + title + ' -- ',
