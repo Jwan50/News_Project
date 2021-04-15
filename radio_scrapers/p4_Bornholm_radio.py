@@ -1,14 +1,14 @@
 import os
-
 import bs4 as bs
 import datetime
 import requests
 import shutil
-
 from selenium import webdriver
 from youtube_dl import YoutubeDL
-from data_queries.playlist_saving import *
-from data_queries.if_audio_exist import *
+from data_queries.if_audio_exist import is_exist
+from data_queries.playlist_saving import playlist_to_Fir
+from data_queries.save_audio_to_storage import save_audio
+
 
 radioName = 'p4 bornholm'
 linkName = 'p4bornholm'
@@ -42,7 +42,6 @@ def scrap_P4_bornholm(scrape_back_days, runType):
                 urltxt_new = requests.get(url_new)
                 urltxt_new = urltxt_new.content.decode("utf-8", "ignore")
                 soup = bs.BeautifulSoup(urltxt_new, 'lxml')
-
                 songs = soup.findAll('li', {'class': 'track'})
                 for song in reversed(songs):
                     try:
@@ -94,41 +93,48 @@ def scrap_P4_bornholm(scrape_back_days, runType):
                             audioName = artist + ' - ' + title + '.mp3'
                             fileName = str(audioName.lower())
                             try:
-                                audio_to_Firestorage(fileName)
-                                playlist_to_Fir(title, artist, dt, fileName, data_name)
-                                print('played at: ', dt, 'artist: ' + artist + ' -- ', 'title: ' + title + ' -- ',
-                                      ' -- ', 'radio name: ' + radioName)
+                                if not is_exist(fileName):
+                                    print('found a song to be downloaded')
+                                    tube_artist = artist.split(' ')
+                                    tube_title = title.split(' ')
+                                    play_link = 'https://www.youtube.com/results?search_query='
+                                    for title_word in tube_title:
+                                        play_link = play_link + title_word + '+'
+                                    for artist_word in tube_artist:
+                                        play_link = play_link + artist_word + '+'
+
+                                    play_link = play_link[:-1]
+                                    browser = webdriver.Chrome(executable_path="C:\chromedriver.exe")
+                                    browser.get(play_link)
+                                    browser.find_element_by_css_selector(
+                                        '#yDmH0d > c-wiz > div > div > div.NIoIEf > div.G4njw > div.qqtRac > form > div.lssxud > div > button > div.VfPpkd-RLmnJb').click()
+                                    urltxt = browser.page_source
+                                    soupTube = bs.BeautifulSoup(urltxt, 'html.parser')
+                                    hrefs = soupTube.find_all('a', {
+                                        'class': 'yt-simple-endpoint style-scope ytd-video-renderer'})[0]['href']
+                                    To_play_url = 'https://www.youtube.com' + hrefs
+                                    os.chdir("D:/TempAudFiles")
+
+                                    audio_downloder = YoutubeDL({'format': 'bestaudio/best'})
+                                    audio_downloder.extract_info(To_play_url)
+                                    downloaded_temp = os.listdir("D:\TempAudFiles")
+                                    for file in downloaded_temp:
+                                        if file.lower().startswith(artist.lower()) or file.lower().startswith(
+                                                title.lower()):
+                                            os.rename(file, fileName.lower())
+                                            file_directory = "D:\TempAudFiles" + "\\" + fileName
+                                            dowloaded = os.listdir("D:\AudFiles")
+                                            if fileName not in dowloaded:
+                                                shutil.move(('D:/TempAudFiles/' + fileName.lower()), "D:\AudFiles")
+                                            save_audio(fileName, file_directory)
+                                    songs_saved += 1
+
+                                    playlist_to_Fir(title, artist, dt, fileName, data_name)
+                                    print('played at: ', dt, 'artist: ' + artist + ' -- ', 'title: ' + title + ' -- ',
+                                          ' -- ', 'radio name: ' + radioName)
                             except Exception as e:
                                 print(e)
-                            downloaded = os.listdir("D:\AudFiles")
-                            if fileName not in downloaded:
-                                print('found a song to be downloaded')
-                                tube_artist = artist.split(' ')
-                                tube_title = title.split(' ')
-                                play_link = 'https://www.youtube.com/results?search_query='
-                                for title_word in tube_title:
-                                    play_link = play_link + title_word + '+'
-                                for artist_word in tube_artist:
-                                    play_link = play_link + artist_word + '+'
 
-                                play_link = play_link[:-1]
-                                browser = webdriver.Chrome(executable_path="C:\chromedriver.exe")
-                                browser.get(play_link)
-                                browser.find_element_by_css_selector('#yDmH0d > c-wiz > div > div > div.NIoIEf > div.G4njw > div.qqtRac > form > div.lssxud > div > button > div.VfPpkd-RLmnJb').click()
-                                urltxt = browser.page_source
-                                soupTube = bs.BeautifulSoup(urltxt, 'html.parser')
-                                hrefs = soupTube.find_all('a', {'class': 'yt-simple-endpoint style-scope ytd-video-renderer'})[0]['href']
-                                To_play_url = 'https://www.youtube.com' + hrefs
-                                os.chdir("D:/TempAudFiles")
-
-                                audio_downloder = YoutubeDL({'format': 'bestaudio/best'})
-                                audio_downloder.extract_info(To_play_url)
-                                downloaded_temp = os.listdir("D:\TempAudFiles")
-                                for file in downloaded_temp:
-                                    if file.lower().startswith(artist.lower()) or file.lower().startswith(title.lower()):
-                                        os.rename(file, fileName.lower())
-                                        shutil.move(('D:/TempAudFiles/' + fileName.lower()), "D:\AudFiles")
-                                songs_saved += 1
                                 print('played at: ', dt, 'artist: ' + artist + ' -- ', 'title: ' + title + ' -- ',
                                       ' -- ', 'radio name: ' + radioName)
                             else:
@@ -141,7 +147,7 @@ def scrap_P4_bornholm(scrape_back_days, runType):
                         print(e)
         except Exception as e:
             print(e)
-        today = today - datetime.timedelta(days=1)
+            today = today - datetime.timedelta(days=1)
 
 
 try:

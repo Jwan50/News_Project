@@ -20,8 +20,8 @@ runType = 2
 
 
 def scrap_P3():
-    global songs_found, dt
-    global songs_saved
+    global songs_found, songs_saved, dt
+
     urlbase = 'https://www.dr.dk/playlister/'
     urlbase_name = urlbase + radioName + "/"
     today = datetime.datetime.now()
@@ -42,7 +42,6 @@ def scrap_P3():
                 urltxt_new = requests.get(url_new)
                 urltxt_new = urltxt_new.content.decode("utf-8", "ignore")
                 soup = bs.BeautifulSoup(urltxt_new, 'lxml')
-
                 songs = soup.findAll('li', {'class': 'track'})
                 for song in reversed(songs):
                     try:
@@ -91,7 +90,6 @@ def scrap_P3():
                                                    microsecond=0)
                         else:
                             dt = today.replace(hour=int(played_h), minute=int(played_m), second=0, microsecond=0)
-
                         if runType > 1:
                             audioName = artist + ' - ' + title + '.mp3'
                             fileName = str(audioName.lower())
@@ -137,8 +135,6 @@ def scrap_P3():
                                           ' -- ', 'radio name: ' + radioName)
                             except Exception as e:
                                 print(e)
-                                # downloaded = os.listdir("D:\AudFiles")
-                                # if fileName not in downloaded:
 
                                 print('played at: ', dt, 'artist: ' + artist + ' -- ', 'title: ' + title + ' -- ',
                                       ' -- ', 'radio name: ' + radioName)
