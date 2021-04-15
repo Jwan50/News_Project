@@ -63,8 +63,7 @@ def scrape_berlingske(runType):
                             news_saved += 1
                         else:
                             print(
-                                "Berlingski news for category: '{}', date: '{}' failed to save in data".format(category,
-                                                                                                               dt))
+                                "Berlingski news for category: '{}', date: '{}' failed to save in data".format(category, dt))
                     except Exception as e:
                         print(e)
                     news_found += 1

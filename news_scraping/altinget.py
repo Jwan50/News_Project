@@ -1,7 +1,7 @@
 import bs4 as bs
 import datetime
 import requests
-import data_queries.news_saving
+from data_queries.news_saving import news_save
 
 news_saved = 0
 news_found = 0
@@ -10,6 +10,7 @@ months = {'januar': 1, 'februar': 2, 'marts': 3, 'april': 4, 'maj': 5, 'juni': 6
           'september': 9, 'oktober': 10, 'november': 11, 'december': 12}
 categories = {'kommunal' 'boern', 'eu', 'kultur', 'arbejdsmarked', 'arktis', 'by', 'civilsamfund', 'digital'}
 data_name = 'altinget'
+
 
 def scrape_altinget(runType):
     global news_saved, news_found
@@ -44,12 +45,11 @@ def scrape_altinget(runType):
 
                 if runType > 1:
                     try:
-                        data_queries.news_saving.news_save(provider, headline, content, dt, category, data_name)
-                        if data_queries.news_saving.news_save:
+                        news_save(provider, headline, content, dt, category, data_name)
+                        if news_save:
                             news_saved += 1
                         else:
-                            print("Altinget news for category: '{}', date: '{}' failed to save in data".format(category,
-                                                                                                               dt))
+                            print("Altinget news for category: '{}', date: '{}' failed to save in data".format(category, dt))
                     except Exception as e:
                         print(e)
                     news_found += 1
