@@ -8,7 +8,7 @@ import shutil
 from selenium import webdriver
 from youtube_dl import YoutubeDL
 from data_queries.playlist_saving import *
-from data_queries.audio_save import *
+from data_queries.if_audio_exist import *
 
 radioName = 'p4 bornholm'
 linkName = 'p4bornholm'
