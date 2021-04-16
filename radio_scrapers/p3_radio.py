@@ -15,7 +15,7 @@ songs_found = 0
 data_name = 'P3_playlist'
 removing_word = {'(Radio Edit)', '(Remix)', '(Edit)', '?//'}
 
-scrape_back_days = 1
+scrape_back_days = 0
 runType = 2
 
 
