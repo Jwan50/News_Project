@@ -1,13 +1,11 @@
-import firebase_admin
-from firebase_admin import credentials
 from firebase_admin import firestore
 
-from news_scraping.app_initiating import is_app_initiated
+from data_queries.app_init_news import is_app_init_news
 
 
 def news_save(provider, headline, content, dt, category, data_name):
     try:
-        is_app_initiated()
+        is_app_init_news()
         db = firestore.client()
         if db.collection(data_name).where('headline', '==', headline).where('category', '==', category).where(
                 'date', '==', dt).get():

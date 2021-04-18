@@ -15,11 +15,12 @@ songs_found = 0
 data_name = 'P3_playlist'
 removing_word = {'(Radio Edit)', '(Remix)', '(Edit)', '?//'}
 
-scrape_back_days = 0
-runType = 2
+
+# scrape_back_days = 0
+# runType = 2
 
 
-def scrap_P3():
+def scrap_P3(scrape_back_days, runType):
     global songs_found, songs_saved, dt
 
     urlbase = 'https://www.dr.dk/playlister/'
