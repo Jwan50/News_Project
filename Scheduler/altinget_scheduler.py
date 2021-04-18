@@ -15,5 +15,10 @@ def run_altinget():
 schedule.every(10).seconds.do(run_altinget)
 
 while True:
-    schedule.run_pending()
-    time.sleep(1)
+    try:
+        run_altinget()
+
+        schedule.run_pending()
+        time.sleep(1)
+    except Exception as e:
+        print(e)

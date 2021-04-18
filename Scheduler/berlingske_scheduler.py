@@ -17,5 +17,10 @@ def run_berlingski():
 schedule.every(10).seconds.do(run_berlingski)
 
 while True:
-    schedule.run_pending()
-    time.sleep(1)
+    try:
+        run_berlingski()
+
+        schedule.run_pending()
+        time.sleep(1)
+    except Exception as e:
+        print(e)
