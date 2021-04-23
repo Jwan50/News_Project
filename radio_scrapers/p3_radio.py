@@ -11,6 +11,7 @@ from data_queries.save_audio_to_storage import save_audio
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
+from data_queries.if_playlist_exist import is_playlist
 
 radioName = 'p3'
 songs_saved = 0
@@ -19,12 +20,8 @@ data_name = 'P3_playlist'
 removing_word = {'(Radio Edit)', '(Remix)', '(Edit)', '?//'}
 
 
-# scrape_back_days = 0
-# runType = 2
-
-
 def scrap_P3(scrape_back_days, runType):
-    global songs_found, songs_saved, dt
+    global songs_found, songs_saved, dt, file_directory
 
     urlbase = 'https://www.dr.dk/playlister/'
     urlbase_name = urlbase + radioName + "/"
@@ -98,8 +95,16 @@ def scrap_P3(scrape_back_days, runType):
                             audioName = artist + ' - ' + title + '.mp3'
                             fileName = str(audioName.lower())
                             try:
-                                if not is_exist(fileName):
-                                    print('found a song to be downloaded')
+                                if is_exist(fileName):
+                                    if is_playlist(title, artist, dt, data_name):
+                                        break
+                                    try:
+                                        playlist_to_Fir(title, artist, dt, fileName, data_name)
+                                    except Exception as e:
+                                        print('')
+                                if is_exist(fileName) and is_playlist(title, artist, dt, data_name):
+                                    break
+                                else:
                                     tube_artist = artist.split(' ')
                                     tube_title = title.split(' ')
                                     play_link = 'https://www.youtube.com/results?search_query='
@@ -130,14 +135,26 @@ def scrap_P3(scrape_back_days, runType):
                                         if file.lower().startswith(artist.lower()) or file.lower().startswith(
                                                 title.lower()):
                                             os.rename(file, fileName.lower())
-                                            file_directory = "D:\TempAudFiles" + "\\" + fileName
+                                            file_directory = "D:\AudFiles" + "\\" + fileName
                                             dowloaded = os.listdir("D:\AudFiles")
                                             if fileName not in dowloaded:
                                                 shutil.move(('D:/TempAudFiles/' + fileName.lower()), "D:\AudFiles")
-                                            save_audio(fileName, file_directory)
+                                            downloaded_temp = os.listdir("D:\TempAudFiles")
+                                            for file in downloaded_temp:
+                                                os.remove(file)
+                                        if save_audio(fileName, file_directory):
+                                            playlist_to_Fir(title, artist, dt, fileName, data_name)
+                                        try:
+                                            playlist_to_Fir(title, artist, dt, fileName, data_name)
+                                        except Exception as e:
+                                                print('')
+                                        else:
+                                            continue
+
+
                                     songs_saved += 1
 
-                                    playlist_to_Fir(title, artist, dt, fileName, data_name)
+
                                     print('played at: ', dt, 'artist: ' + artist + ' -- ', 'title: ' + title + ' -- ',
                                           ' -- ', 'radio name: ' + radioName)
                             except Exception as e:

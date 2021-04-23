@@ -4,11 +4,14 @@ import datetime
 import requests
 import shutil
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
 from youtube_dl import YoutubeDL
 from data_queries.if_audio_exist import is_exist
+from data_queries.if_playlist_exist import is_playlist
 from data_queries.playlist_saving import playlist_to_Fir
 from data_queries.save_audio_to_storage import save_audio
-
 
 radioName = 'p4 bornholm'
 linkName = 'p4bornholm'
@@ -21,7 +24,7 @@ removing_word = {'(Radio Edit)', '(Remix)', '(Edit)', '(Single Edit)',
 
 
 def scrap_P4_bornholm(scrape_back_days, runType):
-    global songs_found, songs_saved, dt
+    global songs_found, songs_saved, dt, file_directory
     urlbase = 'https://www.dr.dk/playlister/'
     urlbase_name = urlbase + linkName + "/"
     today = datetime.datetime.now()
@@ -70,31 +73,40 @@ def scrap_P4_bornholm(scrape_back_days, runType):
                         played_h = played_h_m[0]
                         played_m = played_h_m[1]
 
-                        if soup.find('div', {'class': 'playlist-program-details'}):  # because of p3 2021/02/ 09 and 10 natradio issue fixed
+                        if soup.find('div', {
+                            'class': 'playlist-program-details'}):  # because of p3 2021/02/ 09 and 10 natradio issue fixed
                             nat = soup.find('div', {'class': 'playlist-program-details'}).text.strip()
                             nat = nat.lower()
                             if 'i dag' not in nat:
-                                day = nat[13:15]
-                                dt = today.replace(day=int(day), hour=int(played_h), minute=int(played_m), second=0, microsecond=0)
+                                day = nat[4:6]
+                                dt = today.replace(day=int(day), hour=int(played_h), minute=int(played_m), second=0,
+                                                   microsecond=0)
                             if 00.00 < hm_nat < 05.00 and 'i dag' in nat:
-                                _day = str(link_url).split('playlister/' + linkName + '/')[1]
+                                _day = str(link_url).split('playlister/' + radioName + '/')[1]
                                 _day = _day[8:10]
-                                dt = today.replace(day=int(_day), hour=int(played_h), minute=int(played_m), second=0, microsecond=0)
-
+                                dt = today.replace(day=int(_day), hour=int(played_h), minute=int(played_m), second=0,
+                                                   microsecond=0)
                             if 05.00 < hm_nat < 24.00 and 'i dag' in nat:
-                                _day = str(link_url).split('playlister/' + linkName + '/')[1]
+                                _day = str(link_url).split('playlister/' + radioName + '/')[1]
                                 _day = _day[8:10]
-                                dt = today.replace(day=int(_day), hour=int(played_h), minute=int(played_m), second=0, microsecond=0)
-                                if datetime.datetime.now() < dt:
-                                    continue
+                                dt = today.replace(day=int(_day), hour=int(played_h), minute=int(played_m), second=0,
+                                                   microsecond=0)
                         else:
                             dt = today.replace(hour=int(played_h), minute=int(played_m), second=0, microsecond=0)
                         if runType > 1:
                             audioName = artist + ' - ' + title + '.mp3'
                             fileName = str(audioName.lower())
                             try:
-                                if not is_exist(fileName):
-                                    print('found a song to be downloaded')
+                                if is_exist(fileName):
+                                    if is_playlist(title, artist, dt, data_name):
+                                        break
+                                    try:
+                                        playlist_to_Fir(title, artist, dt, fileName, data_name)
+                                    except Exception as e:
+                                        print('')
+                                if is_exist(fileName) and is_playlist(title, artist, dt, data_name):
+                                    break
+                                else:
                                     tube_artist = artist.split(' ')
                                     tube_title = title.split(' ')
                                     play_link = 'https://www.youtube.com/results?search_query='
@@ -104,10 +116,13 @@ def scrap_P4_bornholm(scrape_back_days, runType):
                                         play_link = play_link + artist_word + '+'
 
                                     play_link = play_link[:-1]
-                                    browser = webdriver.Chrome(executable_path="C:\chromedriver.exe")
+                                    options = webdriver.ChromeOptions()
+                                    browser = webdriver.Chrome(executable_path="C:\chromedriver.exe", options=options)
                                     browser.get(play_link)
-                                    browser.find_element_by_css_selector(
-                                        '#yDmH0d > c-wiz > div > div > div.NIoIEf > div.G4njw > div.qqtRac > form > div.lssxud > div > button > div.VfPpkd-RLmnJb').click()
+                                    WebDriverWait(browser, 10).until(
+                                        expected_conditions.visibility_of_element_located((By.XPATH,
+                                                                                           '//*[@id="yDmH0d"]/c-wiz/div/div/div/div[2]/div[1]/div[4]/form/div[1]/div/button/div[2]'))).click()
+
                                     urltxt = browser.page_source
                                     soupTube = bs.BeautifulSoup(urltxt, 'html.parser')
                                     hrefs = soupTube.find_all('a', {
@@ -122,14 +137,24 @@ def scrap_P4_bornholm(scrape_back_days, runType):
                                         if file.lower().startswith(artist.lower()) or file.lower().startswith(
                                                 title.lower()):
                                             os.rename(file, fileName.lower())
-                                            file_directory = "D:\TempAudFiles" + "\\" + fileName
+                                            file_directory = "D:\AudFiles" + "\\" + fileName
                                             dowloaded = os.listdir("D:\AudFiles")
                                             if fileName not in dowloaded:
                                                 shutil.move(('D:/TempAudFiles/' + fileName.lower()), "D:\AudFiles")
-                                            save_audio(fileName, file_directory)
+                                            downloaded_temp = os.listdir("D:\TempAudFiles")
+                                            for file in downloaded_temp:
+                                                os.remove(file)
+                                        if save_audio(fileName, file_directory):
+                                            playlist_to_Fir(title, artist, dt, fileName, data_name)
+                                        try:
+                                            playlist_to_Fir(title, artist, dt, fileName, data_name)
+                                        except Exception as e:
+                                            print('')
+                                        else:
+                                            continue
+
                                     songs_saved += 1
 
-                                    playlist_to_Fir(title, artist, dt, fileName, data_name)
                                     print('played at: ', dt, 'artist: ' + artist + ' -- ', 'title: ' + title + ' -- ',
                                           ' -- ', 'radio name: ' + radioName)
                             except Exception as e:
@@ -147,7 +172,7 @@ def scrap_P4_bornholm(scrape_back_days, runType):
                         print(e)
         except Exception as e:
             print(e)
-            today = today - datetime.timedelta(days=1)
+        today = today - datetime.timedelta(days=1)
 
 
 try:

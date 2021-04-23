@@ -9,10 +9,8 @@ def playlist_to_Fir(title, artist, dt, fileName, data_name):
         firebase_admin.initialize_app(cred)
     db = firestore.client()
     try:
-        if db.collection(data_name).where('date', '==', dt).where('title', '==', title).where('artist', '==',
-                                                                                              artist).get():
-            return
-        else:
+        if not db.collection(data_name).where('date', '==', dt).where('title', '==', title).where('artist', '==',
+                                                                                                  artist).get():
             data = {'title': title,
                     'artist': artist,
                     'date': dt,

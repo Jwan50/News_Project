@@ -1,10 +1,8 @@
 import schedule
 import time
 from radio_scrapers.p3_radio import scrap_P3
-
-scrape_back_days = 0
+scrape_back_days = 1
 runType = 2
-
 
 def run_P3():
     try:

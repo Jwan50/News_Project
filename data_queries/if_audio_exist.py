@@ -6,6 +6,7 @@ from data_queries.app_init_radio import is_app_init_radio
 
 
 def is_exist(fileName):
+
     try:
         is_app_init_radio()
     except Exception as e:
@@ -13,10 +14,11 @@ def is_exist(fileName):
 
     firestore.client()
     bucket = storage.bucket().list_blobs()
+
     for audio in bucket:
-        audio = str(audio)
+        audio = audio.name
         if fileName == audio:
-            return
+            return True
         else:
             continue
 

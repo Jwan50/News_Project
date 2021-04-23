@@ -15,6 +15,9 @@ def run_P4_Bornholm():
 
 schedule.every(10).seconds.do(run_P4_Bornholm)
 
-while True:
+try:
+    run_P4_Bornholm()
     schedule.run_pending()
     time.sleep(1)
+except Exception as e:
+    print(e)
