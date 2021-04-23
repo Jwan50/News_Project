@@ -8,6 +8,9 @@ from youtube_dl import YoutubeDL
 from data_queries.if_audio_exist import is_exist
 from data_queries.playlist_saving import playlist_to_Fir
 from data_queries.save_audio_to_storage import save_audio
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.common.by import By
 
 radioName = 'p3'
 songs_saved = 0
@@ -106,10 +109,13 @@ def scrap_P3(scrape_back_days, runType):
                                         play_link = play_link + artist_word + '+'
 
                                     play_link = play_link[:-1]
-                                    browser = webdriver.Chrome(executable_path="C:\chromedriver.exe")
+                                    options = webdriver.ChromeOptions()
+                                    browser = webdriver.Chrome(executable_path="C:\chromedriver.exe", options=options)
                                     browser.get(play_link)
-                                    browser.find_element_by_css_selector(
-                                        '#yDmH0d > c-wiz > div > div > div.NIoIEf > div.G4njw > div.qqtRac > form > div.lssxud > div > button > div.VfPpkd-RLmnJb').click()
+                                    WebDriverWait(browser, 10).until(
+                                        expected_conditions.visibility_of_element_located((By.XPATH,
+                                                                                           '//*[@id="yDmH0d"]/c-wiz/div/div/div/div[2]/div[1]/div[4]/form/div[1]/div/button/div[2]'))).click()
+
                                     urltxt = browser.page_source
                                     soupTube = bs.BeautifulSoup(urltxt, 'html.parser')
                                     hrefs = soupTube.find_all('a', {

@@ -16,10 +16,9 @@ def run_P3():
 
 schedule.every(10).seconds.do(run_P3)
 
-while True:
-    try:
-        run_P3()
-        schedule.run_pending()
-        time.sleep(1)
-    except Exception as e:
-        print(e)
+try:
+    run_P3()
+    schedule.run_pending()
+    time.sleep(1)
+except Exception as e:
+    print(e)

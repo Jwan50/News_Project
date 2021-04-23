@@ -11,7 +11,7 @@ def is_exist(fileName):
     except Exception as e:
         print(e)
 
-    db = firestore.client()
+    firestore.client()
     bucket = storage.bucket().list_blobs()
     for audio in bucket:
         audio = str(audio)

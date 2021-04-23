@@ -6,7 +6,7 @@ def save_audio(fileName, file_directory):
     if not len(firebase_admin._apps):
         cred = credentials.Certificate(r"C:\Users\gwan1\PycharmProjects\News_Project\serviceAccountKey.json")
         firebase_admin.initialize_app(cred)
-    db = firestore.client()
+    firestore.client()
     bucket = storage.bucket()
     blob = bucket.blob(fileName)
     with open(file_directory, 'rb') as audioFiles:
