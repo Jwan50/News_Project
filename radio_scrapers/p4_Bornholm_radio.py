@@ -82,12 +82,12 @@ def scrap_P4_bornholm(scrape_back_days, runType):
                                 dt = today.replace(day=int(day), hour=int(played_h), minute=int(played_m), second=0,
                                                    microsecond=0)
                             if 00.00 < hm_nat < 05.00 and 'i dag' in nat:
-                                _day = str(link_url).split('playlister/' + radioName + '/')[1]
+                                _day = str(link_url).split('playlister/' + linkName + '/')[1]
                                 _day = _day[8:10]
                                 dt = today.replace(day=int(_day), hour=int(played_h), minute=int(played_m), second=0,
                                                    microsecond=0)
                             if 05.00 < hm_nat < 24.00 and 'i dag' in nat:
-                                _day = str(link_url).split('playlister/' + radioName + '/')[1]
+                                _day = str(link_url).split('playlister/' + linkName + '/')[1]
                                 _day = _day[8:10]
                                 dt = today.replace(day=int(_day), hour=int(played_h), minute=int(played_m), second=0,
                                                    microsecond=0)
