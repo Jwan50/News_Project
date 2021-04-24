@@ -134,7 +134,7 @@ def scrap_P4_bornholm(scrape_back_days, runType):
                                     audio_downloder.extract_info(To_play_url)
                                     downloaded_temp = os.listdir("D:\TempAudFiles")
                                     for file in downloaded_temp:
-                                        if file.lower().startswith(artist.lower()) or file.lower().startswith(
+                                        if file.lower().startswith(artist[:6].lower()) or file.lower().startswith(
                                                 title.lower()):
                                             os.rename(file, fileName.lower())
                                             file_directory = "D:\AudFiles" + "\\" + fileName
@@ -144,14 +144,14 @@ def scrap_P4_bornholm(scrape_back_days, runType):
                                             downloaded_temp = os.listdir("D:\TempAudFiles")
                                             for file in downloaded_temp:
                                                 os.remove(file)
-                                        if save_audio(fileName, file_directory):
-                                            playlist_to_Fir(title, artist, dt, fileName, data_name)
-                                        try:
-                                            playlist_to_Fir(title, artist, dt, fileName, data_name)
-                                        except Exception as e:
-                                            print('')
-                                        else:
-                                            continue
+                                    try:
+                                        save_audio(fileName, file_directory)
+                                    except Exception as e:
+                                        print(e)
+                                    try:
+                                        playlist_to_Fir(title, artist, dt, fileName, data_name)
+                                    except Exception as e:
+                                        print('')
 
                                     songs_saved += 1
 

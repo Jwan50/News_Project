@@ -1,6 +1,5 @@
-import firebase
-import firebase_admin
-from firebase_admin import credentials, firestore, storage
+
+from firebase_admin import firestore, storage
 
 from data_queries.app_init_radio import is_app_init_radio
 

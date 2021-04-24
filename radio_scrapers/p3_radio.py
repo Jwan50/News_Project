@@ -15,6 +15,7 @@ from selenium.webdriver.common.by import By
 from data_queries.if_playlist_exist import is_playlist
 
 radioName = 'p3'
+linkName = 'p3'
 songs_saved = 0
 songs_found = 0
 data_name = 'P3_playlist'
@@ -81,12 +82,12 @@ def scrap_P3(scrape_back_days, runType):
                                 dt = today.replace(day=int(day), hour=int(played_h), minute=int(played_m), second=0,
                                                    microsecond=0)
                             if 00.00 < hm_nat < 05.00 and 'i dag' in nat:
-                                _day = str(link_url).split('playlister/' + radioName + '/')[1]
+                                _day = str(link_url).split('playlister/' + linkName + '/')[1]
                                 _day = _day[8:10]
                                 dt = today.replace(day=int(_day), hour=int(played_h), minute=int(played_m), second=0,
                                                    microsecond=0)
                             if 05.00 < hm_nat < 24.00 and 'i dag' in nat:
-                                _day = str(link_url).split('playlister/' + radioName + '/')[1]
+                                _day = str(link_url).split('playlister/' + linkName + '/')[1]
                                 _day = _day[8:10]
                                 dt = today.replace(day=int(_day), hour=int(played_h), minute=int(played_m), second=0,
                                                    microsecond=0)
@@ -133,7 +134,7 @@ def scrap_P3(scrape_back_days, runType):
                                     audio_downloder.extract_info(To_play_url)
                                     downloaded_temp = os.listdir("D:\TempAudFiles")
                                     for file in downloaded_temp:
-                                        if file.lower().startswith(artist.lower()) or file.lower().startswith(
+                                        if file.lower().startswith(artist[:6].lower()) or file.lower().startswith(
                                                 title.lower()):
                                             os.rename(file, fileName.lower())
                                             file_directory = "D:\AudFiles" + "\\" + fileName
@@ -143,15 +144,14 @@ def scrap_P3(scrape_back_days, runType):
                                             downloaded_temp = os.listdir("D:\TempAudFiles")
                                             for file in downloaded_temp:
                                                 os.remove(file)
-                                        if save_audio(fileName, file_directory):
-                                            playlist_to_Fir(title, artist, dt, fileName, data_name)
-                                        try:
-                                            playlist_to_Fir(title, artist, dt, fileName, data_name)
-                                        except Exception as e:
-                                                print('')
-                                        else:
-                                            continue
-
+                                    try:
+                                        save_audio(fileName, file_directory)
+                                    except Exception as e:
+                                        print(e)
+                                    try:
+                                        playlist_to_Fir(title, artist, dt, fileName, data_name)
+                                    except Exception as e:
+                                        print('')
 
                                     songs_saved += 1
 

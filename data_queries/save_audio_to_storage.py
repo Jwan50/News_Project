@@ -9,8 +9,11 @@ def save_audio(fileName, file_directory):
     firestore.client()
     bucket = storage.bucket()
     blob = bucket.blob(fileName)
-    with open(file_directory, 'rb') as audioFiles:
-        blob.upload_from_file(audioFiles, content_type='audio/mpeg')
+    try:
+        with open(file_directory, 'rb') as audioFiles:
+            blob.upload_from_file(audioFiles, content_type='audio/mpeg')
+    except Exception as e:
+        print('Audio {} was not saved to storage: '.format(fileName) + ': ' + e)
 
 
 try:
