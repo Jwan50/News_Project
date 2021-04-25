@@ -8,7 +8,7 @@ news_found = 0
 provider = 'altinget'
 months = {'januar': 1, 'februar': 2, 'marts': 3, 'april': 4, 'maj': 5, 'juni': 6, 'juli': 7, 'august': 8,
           'september': 9, 'oktober': 10, 'november': 11, 'december': 12}
-categories = {'kommunal' 'boern', 'eu', 'kultur', 'arbejdsmarked', 'arktis', 'by', 'civilsamfund', 'digital'}
+categories = {'kommunal', 'boern', 'eu', 'kultur', 'arbejdsmarked', 'arktis', 'by', 'civilsamfund', 'digital'}
 data_name = 'altinget'
 
 
