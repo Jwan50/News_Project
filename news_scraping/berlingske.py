@@ -7,7 +7,6 @@ news_saved = 0
 news_found = 0
 provider = 'berlingske'
 categories = {'politik', 'sport', 'internationalt', 'samfund'}
-# runType = 2
 data_name = 'berlingske'
 
 
