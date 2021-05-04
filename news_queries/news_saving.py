@@ -1,6 +1,6 @@
 from firebase_admin import firestore
 
-from data_queries.app_init_news import is_app_init_news
+from news_queries.app_init_news import is_app_init_news
 
 
 def news_save(provider, headline, content, dt, category, data_name):

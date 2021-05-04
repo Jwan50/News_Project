@@ -13,7 +13,7 @@ def save_audio(fileName, file_directory):
         with open(file_directory, 'rb') as audioFiles:
             blob.upload_from_file(audioFiles, content_type='audio/mpeg')
     except Exception as e:
-        print('Audio {} was not saved to storage: '.format(fileName) + ': ' + e)
+        print('Audio {} was not saved to storage: '.format(fileName) + ': ' + str(e))
 
 
 try:

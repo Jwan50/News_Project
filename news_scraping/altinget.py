@@ -1,7 +1,7 @@
 import bs4 as bs
 import datetime
 import requests
-from data_queries.news_saving import news_save
+from news_queries.news_saving import news_save
 
 news_saved = 0
 news_found = 0
@@ -49,7 +49,8 @@ def scrape_altinget(runType):
                         if news_save:
                             news_saved += 1
                         else:
-                            print("Altinget news for category: '{}', date: '{}' failed to save in data".format(category, dt))
+                            print("Altinget news for category: '{}', date: '{}' failed to save in data".format(category,
+                                                                                                               dt))
                     except Exception as e:
                         print(e)
                     news_found += 1
