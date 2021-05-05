@@ -1,7 +1,7 @@
 
 from firebase_admin import firestore, storage
 
-from data_queries.app_init_radio import is_app_init_radio
+from radio_queries.app_init_radio import is_app_init_radio
 
 
 def is_exist(fileName):

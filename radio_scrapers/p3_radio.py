@@ -5,14 +5,14 @@ import requests
 import shutil
 from selenium import webdriver
 from youtube_dl import YoutubeDL
-from data_queries.if_audio_exist import is_exist
-from data_queries.playlist_saving import playlist_to_Fir
-from data_queries.save_audio_to_storage import save_audio
+from radio_queries.if_audio_exist import is_exist
+from radio_queries.playlist_saving import playlist_to_Fir
+from radio_queries.save_audio_to_storage import save_audio
 from selenium.webdriver.support.ui import WebDriverWait
 
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
-from data_queries.if_playlist_exist import is_playlist
+from radio_queries.if_playlist_exist import is_playlist
 
 radioName = 'p3'
 linkName = 'p3'
