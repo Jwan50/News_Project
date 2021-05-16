@@ -71,8 +71,3 @@ class Berlingske:
                                                                                                     headline, dt))
             except Exception as e:
                 print(e)
-    #
-    # try:
-    #     scrape_berlingske()
-    # except Exception as e:
-    #     print(e)

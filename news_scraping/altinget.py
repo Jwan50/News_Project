@@ -60,8 +60,4 @@ class Altinget:
                                                                                                     headline, dt))
             except Exception as e:
                 print(e)
-    # try:
-    #     scrape_altinget()
-    #
-    # except Exception as e:
-    #     print("news_found", news_found)
+

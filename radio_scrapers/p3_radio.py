@@ -184,8 +184,3 @@ class p3_radio:
                 print(e)
             today = today - datetime.timedelta(days=1)
 
-    # try:
-    #     scrap_P3()
-    #
-    # except Exception as e:
-    #     print(e)

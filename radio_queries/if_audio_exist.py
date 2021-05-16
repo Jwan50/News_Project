@@ -26,7 +26,3 @@ class is_exist_fileName:
             else:
                 continue
 
-    # try:
-    #     is_exist()
-    # except Exception as e:
-    #     print(e)

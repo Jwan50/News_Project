@@ -186,7 +186,3 @@ class p4_bornholm_scraper:
                 print(e)
             today = today - datetime.timedelta(days=1)
 
-    # try:
-    #     scrap_P4_bornholm()
-    # except Exception as e:
-    #     print(e)

@@ -20,7 +20,3 @@ class save_audio_p3:
         except Exception as e:
             print('Audio {} was not saved to storage: '.format(self.fileName) + ': ' + str(e))
 
-    # try:
-    #     save_audio()
-    # except Exception as e:
-    #     print(e)
