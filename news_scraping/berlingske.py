@@ -7,8 +7,6 @@ from news_queries import news_saving
 class Berlingske:
     def __init__(self, runType):
         self.runType = runType
-        self.news_saved = 0
-        self.news_found = 0
         self.provider = 'berlingske'
         self.categories = {'politik', 'sport', 'internationalt', 'samfund'}
         self.data_name = 'berlingske'
@@ -58,22 +56,13 @@ class Berlingske:
                             content = content[0]
 
                     if self.runType > 1:
+                        news_saving_ber = news_saving.news_saving(self.provider, headline, content, dt,
+                                                                  category,
+                                                                  self.data_name)
                         try:
-                            news_saving_ber = news_saving.news_saving(self.provider, headline, content, dt,
-                                                                      category,
-                                                                      self.data_name)
                             news_saving_ber.news_save()
-
-                            if news_saving_ber:
-                                self.news_saved += 1
-                            else:
-                                print(
-                                    "Berlingski news for category: '{}', date: '{}' failed to save in data".format(
-                                        category,
-                                        dt))
                         except Exception as e:
                             print(e)
-                        self.news_found += 1
                     print(" --News source: {}, --Category: {}, -- Headline: {},  --Date: {}".format(self.provider,
                                                                                                     category,
                                                                                                     headline, dt))
