@@ -64,23 +64,15 @@ class Berlingske:
                                                                       self.data_name)
                             news_saving_ber.news_save()
 
-                            if news_saving_ber:
-                                self.news_saved += 1
-                            else:
-                                print(
-                                    "Berlingski news for category: '{}', date: '{}' failed to save in data".format(
-                                        category,
-                                        dt))
                         except Exception as e:
                             print(e)
-                        self.news_found += 1
                     print(" --News source: {}, --Category: {}, -- Headline: {},  --Date: {}".format(self.provider,
                                                                                                     category,
                                                                                                     headline, dt))
             except Exception as e:
                 print(e)
-
-    try:
-        scrape_berlingske()
-    except Exception as e:
-        print(e)
+    #
+    # try:
+    #     scrape_berlingske()
+    # except Exception as e:
+    #     print(e)

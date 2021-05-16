@@ -48,29 +48,20 @@ class Altinget:
                             break
 
                     if self.runType > 1:
+                        news_saving_alt = news_saving.news_saving(self.provider, headline, content, dt,
+                                                                  category,
+                                                                  self.data_name)
                         try:
-                            news_saving_alt = news_saving.news_saving(self.provider, headline, content, dt,
-                                                                      category,
-                                                                      self.data_name)
                             news_saving_alt.news_save()
-                            if news_saving_alt:
-                                news_saved += 1
-                            else:
-                                print("Altinget news for category: '{}', date: '{}' failed to save in data".format(
-                                    category,
-                                    dt))
                         except Exception as e:
                             print(e)
-                        news_found += 1
                     print(" --News source: {}, --Category: {}, -- Headline: {},  --Date: {}".format(self.provider,
                                                                                                     category,
                                                                                                     headline, dt))
             except Exception as e:
                 print(e)
-
-    try:
-        scrape_altinget()
-        print("news_found", news_found)
-        print("news_saved", news_saved)
-    except Exception as e:
-        print("news_found", news_found)
+    # try:
+    #     scrape_altinget()
+    #
+    # except Exception as e:
+    #     print("news_found", news_found)
