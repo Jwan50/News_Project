@@ -69,7 +69,7 @@ class Berlingske:
             except Exception as e:
                 print(e)
 
-    try:
-        scrape_berlingske()
-    except Exception as e:
-        print(e)
+    # try:
+    #     scrape_berlingske()
+    # except Exception as e:
+    #     print(e)
