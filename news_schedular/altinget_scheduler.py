@@ -14,6 +14,7 @@ class altinget_scheduler:
             altig.scrape_altinget()
 
         except Exception as e:
+
             print('Problem running Altinget scheduler: ', e)
 
     schedule.every(10).seconds.do(run_altinget)
