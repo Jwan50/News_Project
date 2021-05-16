@@ -1,22 +1,35 @@
 from firebase_admin import firestore
 
-from news_queries.app_init_news import is_app_init_news
+from firebase_admin import credentials
+from news_queries import app_init_news
 
 
-def news_save(provider, headline, content, dt, category, data_name):
-    try:
-        is_app_init_news()
-        db = firestore.client()
-        if db.collection(data_name).where('headline', '==', headline).where('category', '==', category).where(
-                'date', '==', dt).get():
-            return
-        else:
-            data = {'category': category,
-                    'content': content,
-                    'date': dt,
-                    'headline': headline,
-                    'provider': provider
-                    }
-            db.collection(data_name).add(data)
-    except Exception as e:
-        print('Problem sending data to: ' + data_name)
+class news_saving:
+    def __init__(self, provider, headline, content, dt, category, data_name):
+        self.cred = credentials.Certificate(r"C:\Users\gwan1\PycharmProjects\News_Project\serviceAccountKey.json")
+        self.provider = provider
+        self.headline = headline
+        self.content = content
+        self.dt = dt
+        self.category = category
+        self.data_name = data_name
+
+    def news_save(self):
+        init_news = app_init_news.Init_news(self.cred)
+        try:
+            init_news.is_app_init_news()
+            db = firestore.client()
+            if db.collection(self.data_name).where('headline', '==', self.headline).where('category', '==',
+                                                                                          self.category).where(
+                    'date', '==', self.dt).get():
+                return
+            else:
+                data = {'category': self.category,
+                        'content': self.content,
+                        'date': self.dt,
+                        'headline': self.headline,
+                        'provider': self.provider
+                        }
+                db.collection(self.data_name).add(data)
+        except Exception as e:
+            print('Problem sending data to: ' + self.data_name)
