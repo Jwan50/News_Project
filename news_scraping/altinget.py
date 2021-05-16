@@ -7,8 +7,6 @@ from news_queries import news_saving
 class Altinget:
     def __init__(self, runType):
         self.runType = runType
-        self.news_saved = 0
-        self.news_found = 0
         self.provider = 'altinget'
         self.months = {'januar': 1, 'februar': 2, 'marts': 3, 'april': 4, 'maj': 5, 'juni': 6, 'juli': 7, 'august': 8,
                        'september': 9, 'oktober': 10, 'november': 11, 'december': 12}
@@ -17,7 +15,6 @@ class Altinget:
         self.data_name = 'altinget'
 
     def scrape_altinget(self):
-        global news_saved, news_found
         urlbase = "https://api.altinget.dk"
         scrap_date = datetime.datetime.now()
         for category in self.categories:
@@ -48,13 +45,15 @@ class Altinget:
                             break
 
                     if self.runType > 1:
-                        news_saving_alt = news_saving.news_saving(self.provider, headline, content, dt,
-                                                                  category,
-                                                                  self.data_name)
                         try:
+                            news_saving_alt = news_saving.news_saving(self.provider, headline, content, dt,
+                                                                      category,
+                                                                      self.data_name)
                             news_saving_alt.news_save()
+
                         except Exception as e:
                             print(e)
+
                     print(" --News source: {}, --Category: {}, -- Headline: {},  --Date: {}".format(self.provider,
                                                                                                     category,
                                                                                                     headline, dt))
