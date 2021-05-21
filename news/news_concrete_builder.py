@@ -22,9 +22,5 @@ class News_concrete_builder:
         self.news.date = date
         return self
 
-    def setProvider(self, provider):
-        self.news.provider = provider
-        return self
-
     def build(self):
         return self.news

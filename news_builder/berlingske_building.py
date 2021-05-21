@@ -61,8 +61,7 @@ class ber_news_building(News_concrete_builder):
 
                     if self.runType > 1:
                         try:
-                            ber_news = News_concrete_builder()
-                            news = ber_news.setCategory(category).setHeadline(headline).setContent(content).setDate(
+                            news = super().setCategory(category).setHeadline(headline).setContent(content).setDate(
                                 date).setProvider(provider=self.provider).build()
 
                             news_saving_alt = \

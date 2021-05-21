@@ -6,14 +6,10 @@ import requests
 
 
 class alt_news_building(News_concrete_builder):
-
     provider = 'altinget'
-
     months = {'januar': 1, 'februar': 2, 'marts': 3, 'april': 4, 'maj': 5, 'juni': 6, 'juli': 7, 'august': 8,
               'september': 9, 'oktober': 10, 'november': 11, 'december': 12}
-
     categories = {'kommunal', 'boern', 'eu', 'kultur', 'arbejdsmarked', 'arktis', 'by', 'civilsamfund', 'digital'}
-
     data_name = 'altinget'
 
     def __init__(self, runType):
@@ -25,6 +21,7 @@ class alt_news_building(News_concrete_builder):
         urlbase = "https://api.altinget.dk"
         scrap_date = datetime.datetime.now()
         for category in self.categories:
+            super().setCategory(category).build()
             urlbase_category = urlbase + '/' + 'kommunal' + '/artikel.aspx'
             try:
                 urltxt = requests.get(urlbase_category)
@@ -33,7 +30,9 @@ class alt_news_building(News_concrete_builder):
                 headers = soup.findAll('article', {'class': 'featured-article featured-article-minor'})
                 for header in reversed(headers):
                     headline = header.find('h3', {'class': 'media-heading media-heading-article'}).text.strip()
+                    super().setHeadline(headline).build()
                     content = header.find('p').text.strip()
+                    super().setContent(content).build()
                     if not content:
                         continue
                     content_date = header.find('time').text
@@ -48,10 +47,10 @@ class alt_news_building(News_concrete_builder):
                             date = scrap_date.replace(day=int(day), month=int(month), year=int(year))
                             date = date.strftime('%Y-%m-%d')
                             date = datetime.datetime.strptime(date, '%Y-%m-%d')
+                            super().setDate(date).build()
                             break
                     if self.runType > 1:
                         try:
-                            # alt_news = News_concrete_builder()
                             news = super().setCategory(category).setHeadline(headline).setContent(content).setDate(
                                 date).setProvider(provider=self.provider).build()
 
