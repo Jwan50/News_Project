@@ -1,6 +1,7 @@
 import schedule
 import time
-from news_scraping import altinget
+
+from news_builder.altinget_building import alt_news_building
 
 
 class altinget_scheduler:
@@ -10,8 +11,8 @@ class altinget_scheduler:
     def run_altinget(self):
         try:
             print('Altinget is running every 20 seconds ... ')
-            altig = altinget.Altinget(self.runType)
-            altig.scrape_altinget()
+            altin = alt_news_building(self.runType)
+            altin.getNews_altinget()
 
         except Exception as e:
 

@@ -1,18 +1,22 @@
 import bs4 as bs
 import datetime
 import requests
+
+from news.concrete_builder import Concrete_builder
 from news_queries import news_saving
 
 
-class Berlingske:
+class ber_news_building(Concrete_builder):
+    provider = 'berlingske'
+    categories = {'politik', 'sport', 'internationalt', 'samfund'}
+    data_name = 'berlingske'
+
     def __init__(self, runType):
+        super().__init__()
         self.runType = runType
-        self.provider = 'berlingske'
-        self.categories = {'politik', 'sport', 'internationalt', 'samfund'}
-        self.data_name = 'berlingske'
 
-    def scrape_berlingske(self):
-
+    def getNews_berlingske(self):
+        global headline, category, content, date, news
         urlbase = 'https://www.berlingske.dk/nyheder/'
         scrap_date = datetime.datetime.now()
         for category in self.categories:
@@ -29,9 +33,9 @@ class Berlingske:
                     hm = header_date.split(':')
                     h = int(hm[0])
                     m = int(hm[1])
-                    dt = scrap_date.replace(hour=h, minute=m, second=0, microsecond=0)
-                    dt = dt.strftime('%Y-%m-%d')
-                    dt = datetime.datetime.strptime(dt, '%Y-%m-%d')
+                    date = scrap_date.replace(hour=h, minute=m, second=0, microsecond=0)
+                    date = date.strftime('%Y-%m-%d')
+                    date = datetime.datetime.strptime(date, '%Y-%m-%d')
                     headline = header.find('h4', {'class': 'teaser__title d-inline-block font-s4'}).text.strip()
                     hrefs = header.find('h4', {'class': 'teaser__title d-inline-block font-s4'})('a')[0]['href']
                     link_to_more = 'https://www.berlingske.dk' + hrefs
@@ -56,13 +60,19 @@ class Berlingske:
                             content = content[0]
 
                     if self.runType > 1:
-                        news_saving_ber = news_saving.news_saving(self.provider, headline, content, dt, category, self.data_name)
                         try:
-                            news_saving_ber.news_save()
+                            ber_news = Concrete_builder()
+                            news = ber_news.setCategory(category).setHeadline(headline).setContent(content).setDate(
+                                date).setProvider(provider=self.provider).build()
+
+                            news_saving_alt = \
+                                news_saving.news_saving(news.provider, news.headline, news.content, news.date,
+                                                        news.category, self.data_name)
+                            news_saving_alt.news_save()
                         except Exception as e:
                             print(e)
-                    print(" --News source: {}, --Category: {}, -- Headline: {},  --Date: {}".format(self.provider,
-                                                                                                    category,
-                                                                                                    headline, dt))
+                    print(" --News source: {}, --Category: {}, -- Headline: {},  --Date: {}".format(news.provider,
+                                                                                                    news.category,
+                                                                                                    news.headline, news.date))
             except Exception as e:
                 print(e)
