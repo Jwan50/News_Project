@@ -3,7 +3,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 
 
-class playlist_to_Fir_p3:
+class playlist_to_Fir:
     def __init__(self, title, artist, dt, fileName, data_name):
         self.title = title
         self.artist = artist

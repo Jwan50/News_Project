@@ -2,7 +2,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore, storage
 
 
-class save_audio_p3:
+class save_audio:
     def __init__(self, fileName, file_directory):
         self.fileName = fileName
         self.file_directory = file_directory

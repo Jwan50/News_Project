@@ -111,8 +111,8 @@ class p3_radio_building(Radio_concrete_builder):
                                         if if_playlist_ex:
                                             break
                                         try:
-                                            playlist_sav = playlist_saving.playlist_to_Fir_p3(playlist.title, playlist.artist, playlist.date,
-                                                                                              playlist.fileName, self.data_name)
+                                            playlist_sav = playlist_saving.playlist_to_Fir(playlist.title, playlist.artist, playlist.date,
+                                                                                           playlist.fileName, self.data_name)
                                             playlist_sav.playlist_to_Fir()
                                         except Exception as e:
                                             print('')
@@ -155,13 +155,13 @@ class p3_radio_building(Radio_concrete_builder):
                                                 downloaded_temp = os.listdir("D:\TempAudFiles")
                                                 for file in downloaded_temp:
                                                     os.remove(file)
-                                        save_audio = save_audio_to_storage.save_audio_p3(playlist.fileName, file_directory)
+                                        save_audio = save_audio_to_storage.save_audio(playlist.fileName, file_directory)
                                         try:
                                             save_audio.save_audio()
                                         except Exception as e:
                                             print(e)
-                                        playlist_sav = playlist_saving.playlist_to_Fir_p3(playlist.title, playlist.artist, playlist.date,
-                                                                                          playlist.fileName, self.data_name)
+                                        playlist_sav = playlist_saving.playlist_to_Fir(playlist.title, playlist.artist, playlist.date,
+                                                                                       playlist.fileName, self.data_name)
                                         try:
                                             playlist_sav.playlist_to_Fir()
                                         except Exception as e:

@@ -81,23 +81,23 @@ class p4_bornholm_building:
                             played_m = played_h_m[1]
 
                             if soup.find('div', {
-                                'class': 'playlist-program-details'}):  # because of p3 2021/02/ 09 and 10 natradio issue fixed
+                                'class': 'playlist-program-details'}):  # because of p4 2021/02/ 09 and 10 natradio issue fixed
                                 nat = soup.find('div', {'class': 'playlist-program-details'}).text.strip()
                                 nat = nat.lower()
                                 if 'i dag' not in nat:
                                     day = nat[13:15]
-                                    dt = today.replace(day=int(day), hour=int(played_h), minute=int(played_m), second=0,
+                                    date = today.replace(day=int(day), hour=int(played_h), minute=int(played_m), second=0,
                                                        microsecond=0)
                                 if 00.00 < hm_nat < 05.00 and 'i dag' in nat:
                                     _day = str(link_url).split('playlister/' + self.linkName + '/')[1]
                                     _day = _day[8:10]
-                                    dt = today.replace(day=int(_day), hour=int(played_h), minute=int(played_m),
+                                    date = today.replace(day=int(_day), hour=int(played_h), minute=int(played_m),
                                                        second=0,
                                                        microsecond=0)
                                 if 05.00 < hm_nat < 24.00 and 'i dag' in nat:
                                     _day = str(link_url).split('playlister/' + self.linkName + '/')[1]
                                     _day = _day[8:10]
-                                    dt = today.replace(day=int(_day), hour=int(played_h), minute=int(played_m),
+                                    date = today.replace(day=int(_day), hour=int(played_h), minute=int(played_m),
                                                        second=0,
                                                        microsecond=0)
                             else:
@@ -106,16 +106,16 @@ class p4_bornholm_building:
                                 audioName = artist + ' - ' + title + '.mp3'
                                 fileName = str(audioName.lower())
                                 try:
-                                    p3_radio = Radio_concrete_builder()
-                                    playlist = p3_radio.setArtist(artist).setTitle(title).setDate(date).setFileName(fileName).build()
+                                    p4_radio = Radio_concrete_builder()
+                                    playlist = p4_radio.setArtist(artist).setTitle(title).setDate(date).setFileName(fileName).build()
                                     if_audio_ex = if_audio_exist.is_exist_fileName(playlist.fileName).is_exist()
                                     if_playlist_ex = if_playlist_exist.is_playlist_exist(playlist.title, playlist.artist, playlist.date, self.data_name).is_playlist()
                                     if if_audio_ex:
                                         if if_playlist_ex:
                                             break
                                         try:
-                                            playlist_sav = playlist_saving.playlist_to_Fir_p3(playlist.title, playlist.artist, playlist.date,
-                                                                                              playlist.fileName, self.data_name)
+                                            playlist_sav = playlist_saving.playlist_to_Fir(playlist.title, playlist.artist, playlist.date,
+                                                                                           playlist.fileName, self.data_name)
                                             playlist_sav.playlist_to_Fir()
                                         except Exception as e:
                                             print('')
@@ -135,7 +135,7 @@ class p4_bornholm_building:
                                         browser.get(play_link)
                                         WebDriverWait(browser, 10).until(
                                             expected_conditions.visibility_of_element_located((By.XPATH,
-                                                                                               '//*[@id="yDmH0d"]/c-wiz/div/div/div/div[2]/div[1]/div[4]/form/div[1]/div/button/div[2]'))).click()
+                                                                                               '//*[@id="yDmH0d"]/c-wiz/div/div/div/div[2]/div[1]/div[4]/form/div[1]/div/button/span'))).click()
 
                                         urltxt = browser.page_source
                                         soupTube = bs.BeautifulSoup(urltxt, 'html.parser')
@@ -158,13 +158,13 @@ class p4_bornholm_building:
                                                 downloaded_temp = os.listdir("D:\TempAudFiles")
                                                 for file in downloaded_temp:
                                                     os.remove(file)
-                                        save_audio = save_audio_to_storage.save_audio_p3(playlist.fileName, file_directory)
+                                        save_audio = save_audio_to_storage.save_audio(playlist.fileName, file_directory)
                                         try:
                                             save_audio.save_audio()
                                         except Exception as e:
                                             print(e)
-                                        playlist_sav = playlist_saving.playlist_to_Fir_p3(playlist.title, playlist.artist, playlist.date,
-                                                                                          playlist.fileName, self.data_name)
+                                        playlist_sav = playlist_saving.playlist_to_Fir(playlist.title, playlist.artist, playlist.date,
+                                                                                       playlist.fileName, self.data_name)
                                         try:
                                             playlist_sav.playlist_to_Fir()
                                         except Exception as e:
