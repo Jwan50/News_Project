@@ -2,11 +2,11 @@ import bs4 as bs
 import datetime
 import requests
 
-from news.concrete_builder import Concrete_builder
+from news.news_concrete_builder import News_concrete_builder
 from news_queries import news_saving
 
 
-class ber_news_building(Concrete_builder):
+class ber_news_building(News_concrete_builder):
     provider = 'berlingske'
     categories = {'politik', 'sport', 'internationalt', 'samfund'}
     data_name = 'berlingske'
@@ -61,7 +61,7 @@ class ber_news_building(Concrete_builder):
 
                     if self.runType > 1:
                         try:
-                            ber_news = Concrete_builder()
+                            ber_news = News_concrete_builder()
                             news = ber_news.setCategory(category).setHeadline(headline).setContent(content).setDate(
                                 date).setProvider(provider=self.provider).build()
 

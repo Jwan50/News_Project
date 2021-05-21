@@ -5,6 +5,8 @@ import requests
 import shutil
 from selenium import webdriver
 from youtube_dl import YoutubeDL
+
+from radio.radio_concrete_builder import Radio_concrete_builder
 from radio_queries import if_audio_exist
 from radio_queries import playlist_saving
 from radio_queries import if_playlist_exist
@@ -14,20 +16,24 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
 
 
+class p4_bornholm_building:
 
-class p3_radio:
-    def __init__(self, scrape_back_days, runType):
+    radioName = 'p4 bornholm'
+    linkName = 'p4bornholm'
+    data_name = 'P4_playlist'
+    removing_word = {'(Radio Edit)', '(Remix)', '(Edit)', '(Single Edit)',
+                              '(Boogie Edit)', '(No Rap Edit)', '(Studio 2054 Remix)',
+                              '(Radio Version)', '(Gettic Remix)', '(Metro Mix)', '?//'}
+
+    def __init__(self, runType, scrape_back_days):
+        super().__init__()
         self.scrape_back_days = scrape_back_days
         self.runType = runType
-        self.radioName = 'p3'
-        self.linkName = 'p3'
-        self.data_name = 'P3_playlist'
-        self.removing_word = {'(Radio Edit)', '(Remix)', '(Edit)', '?//'}
 
-    def scrap_P3(self):
-        global dt, file_directory
+    def getRadio_p4(self):
+        global date, file_directory, fileName, artist, title, playlist
         urlbase = 'https://www.dr.dk/playlister/'
-        urlbase_name = urlbase + self.radioName + "/"
+        urlbase_name = urlbase + self.linkName + "/"
         today = datetime.datetime.now()
         run_end = today - datetime.timedelta(days=self.scrape_back_days)
 
@@ -79,7 +85,7 @@ class p3_radio:
                                 nat = soup.find('div', {'class': 'playlist-program-details'}).text.strip()
                                 nat = nat.lower()
                                 if 'i dag' not in nat:
-                                    day = nat[4:6]
+                                    day = nat[13:15]
                                     dt = today.replace(day=int(day), hour=int(played_h), minute=int(played_m), second=0,
                                                        microsecond=0)
                                 if 00.00 < hm_nat < 05.00 and 'i dag' in nat:
@@ -95,24 +101,24 @@ class p3_radio:
                                                        second=0,
                                                        microsecond=0)
                             else:
-                                dt = today.replace(hour=int(played_h), minute=int(played_m), second=0, microsecond=0)
+                                date = today.replace(hour=int(played_h), minute=int(played_m), second=0, microsecond=0)
                             if self.runType > 1:
                                 audioName = artist + ' - ' + title + '.mp3'
                                 fileName = str(audioName.lower())
                                 try:
-                                    if_audio_ex = if_audio_exist.is_exist_fileName(fileName).is_exist()
-                                    if_playlist_ex = if_playlist_exist.is_playlist_exist(title, artist, dt, self.data_name).is_playlist()
+                                    p3_radio = Radio_concrete_builder()
+                                    playlist = p3_radio.setArtist(artist).setTitle(title).setDate(date).setFileName(fileName).build()
+                                    if_audio_ex = if_audio_exist.is_exist_fileName(playlist.fileName).is_exist()
+                                    if_playlist_ex = if_playlist_exist.is_playlist_exist(playlist.title, playlist.artist, playlist.date, self.data_name).is_playlist()
                                     if if_audio_ex:
                                         if if_playlist_ex:
                                             break
                                         try:
-                                            playlist_sav = playlist_saving.playlist_to_Fir_p3(title, artist, dt,
-                                                                                              fileName, self.data_name)
+                                            playlist_sav = playlist_saving.playlist_to_Fir_p3(playlist.title, playlist.artist, playlist.date,
+                                                                                              playlist.fileName, self.data_name)
                                             playlist_sav.playlist_to_Fir()
                                         except Exception as e:
                                             print('')
-                                    if if_audio_ex and if_playlist_ex:
-                                        break
                                     else:
                                         tube_artist = artist.split(' ')
                                         tube_title = title.split(' ')
@@ -152,35 +158,33 @@ class p3_radio:
                                                 downloaded_temp = os.listdir("D:\TempAudFiles")
                                                 for file in downloaded_temp:
                                                     os.remove(file)
-                                        save_audio = save_audio_to_storage.save_audio_p3(fileName, file_directory)
+                                        save_audio = save_audio_to_storage.save_audio_p3(playlist.fileName, file_directory)
                                         try:
                                             save_audio.save_audio()
                                         except Exception as e:
                                             print(e)
-                                        playlist_sav = playlist_saving.playlist_to_Fir_p3(title, artist, dt,
-                                                                                             fileName, self.data_name)
+                                        playlist_sav = playlist_saving.playlist_to_Fir_p3(playlist.title, playlist.artist, playlist.date,
+                                                                                          playlist.fileName, self.data_name)
                                         try:
                                             playlist_sav.playlist_to_Fir()
                                         except Exception as e:
                                             print(e)
 
-
-                                        print('played at: ', dt, 'artist: ' + artist + ' -- ',
-                                              'title: ' + title + ' -- ',
+                                        print('played at: ', playlist.date, 'artist: ' + playlist.artist + ' -- ',
+                                              'title: ' + playlist.title + ' -- ',
                                               ' -- ', 'radio name: ' + self.radioName)
                                 except Exception as e:
                                     print(e)
 
-                                    print('played at: ', dt, 'artist: ' + artist + ' -- ', 'title: ' + title + ' -- ',
+                                    print('played at: ', playlist.date, 'artist: ' + playlist.artist + ' -- ', 'title: ' + playlist.title + ' -- ',
                                           ' -- ', 'radio name: ' + self.radioName)
                                 else:
-                                    print('song: ' + title + ' - ' + artist + ' is already exists')
+                                    print('song: ' + playlist.title + ' - ' + playlist.artist + ' is already exists')
                             else:
-                                print('played at: ', dt, 'artist: ' + artist + ' -- ', 'title: ' + title + ' -- ',
+                                print('played at: ', playlist.date, 'artist: ' + playlist.artist + ' -- ', 'title: ' + playlist.title + ' -- ',
                                       ' -- ', 'radio name: ' + self.radioName)
                         except Exception as e:
                             print(e)
             except Exception as e:
                 print(e)
             today = today - datetime.timedelta(days=1)
-

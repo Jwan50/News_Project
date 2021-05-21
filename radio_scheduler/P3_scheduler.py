@@ -1,6 +1,7 @@
 import schedule
 import time
-from radio_scrapers import p3_radio
+from radio_scrapers import p3_radio_building
+
 
 class P3_scheduler:
     def __init__(self):
@@ -10,13 +11,14 @@ class P3_scheduler:
     def run_P3(self):
         try:
             print('P3 is running every 10 seconds ... ')
-            p3 = p3_radio.p3_radio(self.scrape_back_days, self.runType)
-            p3.scrap_P3()
+            p3 = p3_radio_building.p3_radio_building(self.scrape_back_days, self.runType)
+            p3.getRadio_p3()
         except Exception as e:
             print('Problem running run_P3 scheduler: ', e)
 
-
     schedule.every(10).seconds.do(run_P3)
+
+
 while True:
     sched_p3 = P3_scheduler()
     try:

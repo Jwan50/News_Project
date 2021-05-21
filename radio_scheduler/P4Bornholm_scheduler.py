@@ -1,6 +1,6 @@
 import schedule
 import time
-from radio_scrapers import p4_Bornholm_radio
+from radio_scrapers import p4_Bornholm_building
 
 scrape_back_days = 0
 runType = 2
@@ -14,8 +14,8 @@ class P4_bornholm:
     def run_P4_Bornholm(self):
         try:
             print('P4 Bornholm is running every 10 seconds ... ')
-            p4 = p4_Bornholm_radio.p4_bornholm_scraper(self.scrape_back_days, self.runType)
-            p4.scrap_P4_bornholm()
+            p4 = p4_Bornholm_building.p4_bornholm_building(self.scrape_back_days, self.runType)
+            p4.getRadio_p4()
 
         except Exception as e:
             print('Problem running P4 Bornholm scheduler: ', e)

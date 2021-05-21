@@ -4,10 +4,10 @@ from firebase_admin import firestore
 
 
 class is_playlist_exist:
-    def __init__(self, title, artist, dt, data_name):
+    def __init__(self, title, artist, date, data_name):
         self.title = title
         self.artist = artist
-        self.dt = dt
+        self.date = date
         self.data_name = data_name
 
     def is_playlist(self):
@@ -16,7 +16,7 @@ class is_playlist_exist:
             firebase_admin.initialize_app(cred)
         db = firestore.client()
 
-        if db.collection(self.data_name).where('date', '==', self.dt).where('title', '==', self.title).where('artist',
+        if db.collection(self.data_name).where('date', '==', self.date).where('title', '==', self.title).where('artist',
                                                                                                              '==',
                                                                                                              self.artist).get():
             return True
