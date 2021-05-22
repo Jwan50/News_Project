@@ -22,7 +22,7 @@ class alt_news_building(News_concrete_builder):
         scrap_date = datetime.datetime.now()
         for category in self.categories:
             super().setCategory(category).build()
-            urlbase_category = urlbase + '/' + 'kommunal' + '/artikel.aspx'
+            urlbase_category = urlbase + '/' + category + '/artikel.aspx'
             try:
                 urltxt = requests.get(urlbase_category)
                 urltxt = urltxt.content
@@ -58,6 +58,7 @@ class alt_news_building(News_concrete_builder):
                                 news_saving.news_saving(news.provider, news.headline, news.content, news.date,
                                                         news.category, self.data_name)
                             news_saving_alt.news_save()
+
                         except Exception as e:
                             print(e)
                     print(" --News source: {}, --Category: {}, -- Headline: {},  --Date: {}".format(news.provider,

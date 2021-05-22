@@ -19,8 +19,9 @@ class news_saving:
         try:
             init_news.is_app_init_news()
             db = firestore.client()
-            if db.collection('altinget').where('headline', '==', self.headline).where('category', '==', self.category).where(
-                'date', '==', self.date).get():
+            data_list = db.collection('altinget').where('headline', '==', self.headline).where('category', '==', self.category).where(
+                'date', '==', self.date).get()
+            if data_list:
                 return True
             else:
                 data = {'category': self.category,
