@@ -68,6 +68,7 @@ class ber_news_building(News_concrete_builder):
                                 news_saving.news_saving(news.provider, news.headline, news.content, news.date,
                                                         news.category, self.data_name)
                             news_saving_alt.news_save()
+
                         except Exception as e:
                             print(e)
                     print(" --News source: {}, --Category: {}, -- Headline: {},  --Date: {}".format(news.provider,

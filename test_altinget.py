@@ -21,33 +21,55 @@ class test_Altinget(unittest.TestCase):
             firebase_admin.initialize_app(credentials.Certificate(r"C:\Users\gwan1\PycharmProjects\News_Project\serviceAccountKey.json"))
 
         except Exception as e:
+
             print(e)
+
         db = firestore.client()
 
         news_list = str(headline)
-        docs = db.collection('altinget').where('headline', '==', headline).stream()
+
+        docs = db.collection('berlingske').where('headline', '==', headline).stream()
+
         for doc in docs:
+
             a = u'{} => {}'.format(doc.id, doc.to_dict())
+
             a = a.split("=>")
+
             a = a[1]
+
             a = a.split("headline': ")
-            a = a[1]
+
+            a = str(a[1])
+
+            if "\xa0" in a:
+                a = a.replace("\xa0", " ")
+
+            a = a.replace(u"'", u"")
+
             if 'content' in a:
-                a = a.split(", 'content':")
+                a = a.split(", content:")
+
                 a = a[0]
+
             if 'provider' in a:
-                a = a.split(", 'provider':")
+                a = a.split(", provider:")
+
                 a = a[0]
+
             if 'category' in a:
-                a = a.split(", 'category':")
+                a = a.split(", category:")
+
                 a = a[0]
 
             if 'date' in a:
-                a = a.split(", 'date':")
-                a = a[0]
-            if '\xa0' in a:
-                a = a.replace('\xa0', '')
-            a = a.replace(u"'", u"")
-            print(news_list, '----', a)
+                a = a.split(", date:")
 
-            self.assertEqual(news_list, a)
+                a = a[0]
+
+            if "}" in a:
+                a = a.replace("}", " ")
+
+            a = a.replace(u"'", u"")
+
+            self.assertEqual(news_list, a.strip())
