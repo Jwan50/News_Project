@@ -3,7 +3,7 @@ import datetime
 import requests
 
 from news.concrete_news_builder import Concrete_news_builder
-from news_queries import news_saving
+from news_queries import news_saving, app_init_news
 
 
 class ber_concretenews_building(Concrete_news_builder):
@@ -60,15 +60,15 @@ class ber_concretenews_building(Concrete_news_builder):
                             content = content[0]
 
                     if self.runType > 1:
+                        init_app = app_init_news.Init_news()
+                        news = super().setCategory(category).setHeadline(headline).setContent(content).setDate(
+                            date).setProvider(provider=self.provider).build()
+
+                        news_saving_ber = news_saving.news_saving(news.provider, news.headline, news.content, news.date,
+                                                                  news.category, self.data_name)
                         try:
-                            news = super().setCategory(category).setHeadline(headline).setContent(content).setDate(
-                                date).setProvider(provider=self.provider).build()
-
-                            news_saving_alt = \
-                                news_saving.news_saving(news.provider, news.headline, news.content, news.date,
-                                                        news.category, self.data_name)
-                            news_saving_alt.news_save()
-
+                            init_app.is_app_init_news()
+                            news_saving_ber.news_save()
                         except Exception as e:
                             print(e)
                     print(" --News source: {}, --Category: {}, -- Headline: {},  --Date: {}".format(news.provider,

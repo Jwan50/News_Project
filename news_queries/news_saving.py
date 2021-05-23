@@ -1,12 +1,9 @@
 from firebase_admin import firestore
 
-from firebase_admin import credentials
-from news_queries import app_init_news
-
 
 class news_saving:
     def __init__(self, provider, headline, content, date, category, data_name):
-        self.cred = credentials.Certificate(r"C:\Users\gwan1\PycharmProjects\News_Project\serviceAccountKey.json")
+
         self.provider = provider
         self.headline = headline
         self.content = content
@@ -15,11 +12,10 @@ class news_saving:
         self.data_name = data_name
 
     def news_save(self):
-        init_news = app_init_news.Init_news(self.cred)
         try:
-            init_news.is_app_init_news()
             db = firestore.client()
-            data_list = db.collection('altinget').where('headline', '==', self.headline).where('category', '==', self.category).where(
+            data_list = db.collection('altinget').where('headline', '==', self.headline).where('category', '==',
+                                                                                               self.category).where(
                 'date', '==', self.date).get()
             if data_list:
                 return True

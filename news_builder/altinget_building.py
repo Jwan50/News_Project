@@ -1,5 +1,5 @@
 from news.concrete_news_builder import Concrete_news_builder
-from news_queries import news_saving
+from news_queries import news_saving, app_init_news
 import bs4 as bs
 import datetime
 import requests
@@ -22,7 +22,7 @@ class alt_concretenews_building(Concrete_news_builder):
         scrap_date = datetime.datetime.now()
         for category in self.categories:
             super().setCategory(category).build()
-            urlbase_category = urlbase + '/' + category + '/artikel.aspx'
+            urlbase_category = urlbase + '/' + 'kommunal' + '/artikel.aspx'
             try:
                 urltxt = requests.get(urlbase_category)
                 urltxt = urltxt.content
@@ -30,9 +30,7 @@ class alt_concretenews_building(Concrete_news_builder):
                 headers = soup.findAll('article', {'class': 'featured-article featured-article-minor'})
                 for header in reversed(headers):
                     headline = header.find('h3', {'class': 'media-heading media-heading-article'}).text.strip()
-                    super().setHeadline(headline).build()
                     content = header.find('p').text.strip()
-                    super().setContent(content).build()
                     if not content:
                         continue
                     content_date = header.find('time').text
@@ -47,19 +45,18 @@ class alt_concretenews_building(Concrete_news_builder):
                             date = scrap_date.replace(day=int(day), month=int(month), year=int(year))
                             date = date.strftime('%Y-%m-%d')
                             date = datetime.datetime.strptime(date, '%Y-%m-%d')
-                            super().setDate(date).build()
                             break
 
                     if self.runType > 1:
+                        init_app = app_init_news.Init_news()
+                        news = super().setCategory(category).setHeadline(headline).setContent(content).setDate(
+                            date).setProvider(provider=self.provider).build()
+
+                        news_saving_alt = news_saving.news_saving(news.provider, news.headline, news.content, news.date,
+                                                                  news.category, self.data_name)
                         try:
-                            news = super().setCategory(category).setHeadline(headline).setContent(content).setDate(
-                                date).setProvider(provider=self.provider).build()
-
-                            news_saving_alt = \
-                                news_saving.news_saving(news.provider, news.headline, news.content, news.date,
-                                                        news.category, self.data_name)
+                            init_app.is_app_init_news()
                             news_saving_alt.news_save()
-
                         except Exception as e:
                             print(e)
                     print(" --News source: {}, --Category: {}, -- Headline: {},  --Date: {}".format(news.provider,
