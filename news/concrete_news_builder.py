@@ -1,7 +1,7 @@
 from news import news_object
 
 
-class News_builder:
+class Concrete_news_builder:
     def __init__(self, news=news_object.news_object()):
         self.news = news
 

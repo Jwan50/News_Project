@@ -1,11 +1,11 @@
-from news.news_builder import News_builder
+from news.concrete_news_builder import Concrete_news_builder
 from news_queries import news_saving
 import bs4 as bs
 import datetime
 import requests
 
 
-class alt_news_building(News_builder):
+class alt_concretenews_building(Concrete_news_builder):
     provider = 'altinget'
     months = {'januar': 1, 'februar': 2, 'marts': 3, 'april': 4, 'maj': 5, 'juni': 6, 'juli': 7, 'august': 8,
               'september': 9, 'oktober': 10, 'november': 11, 'december': 12}

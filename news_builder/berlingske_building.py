@@ -2,11 +2,11 @@ import bs4 as bs
 import datetime
 import requests
 
-from news.news_builder import News_builder
+from news.concrete_news_builder import Concrete_news_builder
 from news_queries import news_saving
 
 
-class ber_news_building(News_builder):
+class ber_concretenews_building(Concrete_news_builder):
     provider = 'berlingske'
     categories = {'politik', 'sport', 'internationalt', 'samfund'}
     data_name = 'berlingske'

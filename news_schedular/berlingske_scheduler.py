@@ -1,6 +1,6 @@
 import schedule
 import time
-from news_builder.berlingske_building import  ber_news_building
+from news_builder.berlingske_building import  ber_concretenews_building
 
 
 class berlingske_scheduler:
@@ -10,7 +10,7 @@ class berlingske_scheduler:
     def run_berlingski(self):
         try:
             print('Berlingski is running every 10 seconds ... ')
-            ber = ber_news_building(self.runType)
+            ber = ber_concretenews_building(self.runType)
             ber.getNews_berlingske()
 
         except Exception as e:

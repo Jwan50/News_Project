@@ -4,7 +4,7 @@ import firebase_admin
 from firebase_admin import credentials
 from news_builder import berlingske_building
 from firebase_admin import firestore
-from news_builder.berlingske_building import ber_news_building
+from news_builder.berlingske_building import ber_concretenews_building
 
 
 class test_Altinget(unittest.TestCase):
@@ -12,12 +12,12 @@ class test_Altinget(unittest.TestCase):
     def test_getNews_belingske(self):
         global headline, content, date, data_list, category, provider
         try:
-            ber_news_building(2).getNews_berlingske()
-            category = berlingske_building.ber_news_building(2).news.category
-            headline = berlingske_building.ber_news_building(2).news.headline
-            content = berlingske_building.ber_news_building(2).news.content
-            date = berlingske_building.ber_news_building(2).news.date
-            provider = berlingske_building.ber_news_building(2).news.provider
+            ber_concretenews_building(2).getNews_berlingske()
+            category = berlingske_building.ber_concretenews_building(2).news.category
+            headline = berlingske_building.ber_concretenews_building(2).news.headline
+            content = berlingske_building.ber_concretenews_building(2).news.content
+            date = berlingske_building.ber_concretenews_building(2).news.date
+            provider = berlingske_building.ber_concretenews_building(2).news.provider
             firebase_admin.initialize_app(credentials.Certificate(r"C:\Users\gwan1\PycharmProjects\News_Project\serviceAccountKey.json"))
 
         except Exception as e:
