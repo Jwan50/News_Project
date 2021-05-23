@@ -73,6 +73,7 @@ class ber_concretenews_building(Concrete_news_builder):
                             print(e)
                     print(" --News source: {}, --Category: {}, -- Headline: {},  --Date: {}".format(news.provider,
                                                                                                     news.category,
-                                                                                                    news.headline, news.date))
+                                                                                                    news.headline,
+                                                                                                    news.date))
             except Exception as e:
                 print(e)
