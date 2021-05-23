@@ -1,7 +1,7 @@
 from radio import radio_object
 
 
-class Radio_concrete_builder:
+class Radio_builder:
     def __init__(self, radio=radio_object.radio_object):
         self.radio = radio
 

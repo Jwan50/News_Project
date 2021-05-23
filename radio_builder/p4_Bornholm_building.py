@@ -6,7 +6,7 @@ import shutil
 from selenium import webdriver
 from youtube_dl import YoutubeDL
 
-from radio.radio_concrete_builder import Radio_concrete_builder
+from radio.radio_builder import Radio_builder
 from radio_queries import if_audio_exist
 from radio_queries import playlist_saving
 from radio_queries import if_playlist_exist
@@ -106,7 +106,7 @@ class p4_bornholm_building:
                                 audioName = artist + ' - ' + title + '.mp3'
                                 fileName = str(audioName.lower())
                                 try:
-                                    p4_radio = Radio_concrete_builder()
+                                    p4_radio = Radio_builder()
                                     playlist = p4_radio.setArtist(artist).setTitle(title).setDate(date).setFileName(fileName).build()
                                     if_audio_ex = if_audio_exist.is_exist_fileName(playlist.fileName).is_exist()
                                     if_playlist_ex = if_playlist_exist.is_playlist_exist(playlist.title, playlist.artist, playlist.date, self.data_name).is_playlist()

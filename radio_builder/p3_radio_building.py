@@ -13,10 +13,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
 
-from radio.radio_concrete_builder import Radio_concrete_builder
+from radio.radio_builder import Radio_builder
 
 
-class p3_radio_building(Radio_concrete_builder):
+class p3_radio_building(Radio_builder):
     radioName = 'p3'
     linkName = 'p3'
     data_name = 'P3_playlist'
@@ -103,7 +103,7 @@ class p3_radio_building(Radio_concrete_builder):
                                 audioName = artist + ' - ' + title + '.mp3'
                                 fileName = str(audioName.lower())
                                 try:
-                                    p3_radio = Radio_concrete_builder()
+                                    p3_radio = Radio_builder()
                                     playlist = p3_radio.setArtist(artist).setTitle(title).setDate(date).setFileName(fileName).build()
                                     if_audio_ex = if_audio_exist.is_exist_fileName(playlist.fileName).is_exist()
                                     if_playlist_ex = if_playlist_exist.is_playlist_exist(playlist.title, playlist.artist, playlist.date, self.data_name).is_playlist()
