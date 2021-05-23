@@ -14,10 +14,10 @@ class news_saving:
     def news_save(self):
         try:
             db = firestore.client()
-            data_list = db.collection('altinget').where('headline', '==', self.headline).where('category', '==',
+            if_exists = db.collection('altinget').where('headline', '==', self.headline).where('category', '==',
                                                                                                self.category).where(
                 'date', '==', self.date).get()
-            if data_list:
+            if if_exists:
                 return True
             else:
                 data = {'category': self.category,
