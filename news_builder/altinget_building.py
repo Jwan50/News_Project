@@ -49,6 +49,7 @@ class alt_news_building(News_concrete_builder):
                             date = datetime.datetime.strptime(date, '%Y-%m-%d')
                             super().setDate(date).build()
                             break
+
                     if self.runType > 1:
                         try:
                             news = super().setCategory(category).setHeadline(headline).setContent(content).setDate(
@@ -63,7 +64,7 @@ class alt_news_building(News_concrete_builder):
                             print(e)
                     print(" --News source: {}, --Category: {}, -- Headline: {},  --Date: {}".format(news.provider,
                                                                                                     news.category,
-                                                                                                    news.headline, news.date))
-
+                                                                                                    news.headline,
+                                                                                                    news.date))
             except Exception as e:
                 print(e)

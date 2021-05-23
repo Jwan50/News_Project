@@ -1,5 +1,4 @@
 from news import news_object
-# from abc import ABC, abstractmethod
 
 
 class News_concrete_builder:
