@@ -1,6 +1,6 @@
 import schedule
 import time
-from radio_scrapers import p4_Bornholm_building
+from radio_builder import p4_Bornholm_building
 
 scrape_back_days = 0
 runType = 2

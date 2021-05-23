@@ -1,6 +1,6 @@
 import schedule
 import time
-from radio_scrapers import p3_radio_building
+from radio_builder import p3_radio_building
 
 
 class P3_scheduler:
