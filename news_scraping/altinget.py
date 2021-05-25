@@ -5,6 +5,10 @@ from Altinget_Data_Extracting.altinget_getContent import altinget_getContent
 from Altinget_Data_Extracting.altinget_getHeadline import altinget_getHeadline
 from Altinget_Data_Extracting.altinget_getDate import altinget_getDate
 from news_data_queries.news_gothering_data import news_gothering_data
+from firebase_admin import firestore
+import unittest
+
+from tests.test_altinget import test_getNews_altinget
 
 provider = 'altinget'
 categories = {'kommunal'}
@@ -12,6 +16,7 @@ data_name = 'altinget'
 
 
 def scrape_altinget(runType):
+    global header
     urlbase = "https://api.altinget.dk"
     scrap_date = datetime.datetime.now()
     for category in categories:
@@ -26,6 +31,7 @@ def scrape_altinget(runType):
                 if not content:
                     continue
                 headline = altinget_getHeadline(header)
+                test_getNews_altinget(headline)
                 dt = altinget_getDate(header, scrap_date)
                 news_gothering_data(headline, content, dt, provider, category, runType, data_name)
 

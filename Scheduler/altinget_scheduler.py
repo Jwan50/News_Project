@@ -1,7 +1,7 @@
 import schedule
 from news_scraping.altinget import scrape_altinget
 
-runEvery = 10
+runEvery = 5
 runType = 2
 
 

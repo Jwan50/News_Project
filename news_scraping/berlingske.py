@@ -5,7 +5,7 @@ from Berlingske_Data_Extracting.berlingske_getContent import berlingske_getConte
 from Berlingske_Data_Extracting.berlingske_getHeadline import berlingske_getHeadline
 from Berlingske_Data_Extracting.berlingske_getDate import berlingske_getDate
 from news_data_queries.news_gothering_data import news_gothering_data
-
+from tests.test_berlingske import test_getNews_berlingske
 provider = 'berlingske'
 categories = {'politik', 'sport', 'internationalt', 'samfund'}
 data_name = 'berlingske'
@@ -24,6 +24,7 @@ def scrape_berlingske(runType):
             for header in reversed(headers):
 
                 headline = berlingske_getHeadline(header)
+                test_getNews_berlingske(headline)
                 content = berlingske_getContent(header)
                 dt = berlingske_getDate(header, scrap_date)
                 if not dt:
