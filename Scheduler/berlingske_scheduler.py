@@ -4,7 +4,7 @@ import schedule
 from news_scraping.berlingske import scrape_berlingske
 
 runEvery = 5
-runType = 1  # runType is optional: 1 for only printing the scraper result, 2 for printing and saving the data to firebase
+runType = 1
 
 
 def run_berlingski():
