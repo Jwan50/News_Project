@@ -9,6 +9,7 @@ def is_news_exist(headline, content, dt, provider, category, data_name):
             'date', '==', dt).get()
     if not result:
         news_save(provider, headline, content, dt, category, data_name)
+
     else:
         print('Exists: ', ' -Category: ', category, ' -Headline', headline, ' -Date', dt)
         return False

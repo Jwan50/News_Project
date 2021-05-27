@@ -15,7 +15,7 @@ def run_P4_Bornholm():
         print('Problem running P4 Bornholm scheduler: ', e)
 
 
-schedule.every(10).seconds.do(run_P4_Bornholm)
+schedule.every(runEvery).seconds.do(run_P4_Bornholm)
 
 while True:
     schedule.run_pending()
