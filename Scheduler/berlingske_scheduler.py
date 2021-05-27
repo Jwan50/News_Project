@@ -1,26 +1,22 @@
-import schedule
-
 import time
 
+import schedule
 from news_scraping.berlingske import scrape_berlingske
 
+runEvery = 5
+runType = 2
 
 def run_berlingski():
     try:
-        print('Berlingski is running every 20 seconds ... ')
-        scrape_berlingske(2)
+        print('Berlingski is running every {} seconds ... '.format(runEvery))
+        scrape_berlingske(runType)
 
     except Exception as e:
         print('Problem running Berlingski scheduler: ', e)
 
 
-schedule.every(10).seconds.do(run_berlingski)
+schedule.every(runEvery).seconds.do(run_berlingski)
 
 while True:
-    try:
-        run_berlingski()
-
-        schedule.run_pending()
-        time.sleep(1)
-    except Exception as e:
-        print(e)
+    schedule.run_pending()
+    time.sleep(1)

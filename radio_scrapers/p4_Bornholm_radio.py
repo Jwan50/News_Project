@@ -1,26 +1,14 @@
-import os
 import bs4 as bs
 import datetime
 import requests
-import shutil
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions
-from selenium.webdriver.support.wait import WebDriverWait
-from youtube_dl import YoutubeDL
-from data_queries.if_audio_exist import is_exist
-from data_queries.if_playlist_exist import is_playlist
-from data_queries.playlist_saving import playlist_to_Fir
-from data_queries.save_audio_to_storage import save_audio
+from P4_Data_Extracting.p4_getTitle import p4_getTitle
+from P4_Data_Extracting.p4_getArtist import p4_getArtist
+from P4_Data_Extracting.p4_getDate import p4_getDate
+from radio_data_queries.radio_gothering_data import radio_gothering_data
 
 radioName = 'p4 bornholm'
 linkName = 'p4bornholm'
-songs_saved = 0
-songs_found = 0
 data_name = 'P4_playlist'
-removing_word = {'(Radio Edit)', '(Remix)', '(Edit)', '(Single Edit)',
-                 '(Boogie Edit)', '(No Rap Edit)', '(Studio 2054 Remix)',
-                 '(Radio Version)', '(Gettic Remix)', '(Metro Mix)', '?//'}
 
 
 def scrap_P4_bornholm(scrape_back_days, runType):
@@ -46,137 +34,20 @@ def scrap_P4_bornholm(scrape_back_days, runType):
                 urltxt_new = urltxt_new.content.decode("utf-8", "ignore")
                 soup = bs.BeautifulSoup(urltxt_new, 'lxml')
                 songs = soup.findAll('li', {'class': 'track'})
-                for song in reversed(songs):
-                    try:
+                if not songs:
+                    continue
+                else:
+                    for song in reversed(songs):
                         if song.find('time') is None:
                             continue
-                        if song.find('span', itemprop="byArtist").text:  # to insure that artist exists
-                            artist = song.find('span', itemprop="byArtist").text.strip()
                         else:
-                            continue
-
-                        if song.find('a').text.strip():  # to insure that title exists
-                            title = song.find('a').text.strip()
-                        else:
-                            continue
-
-                        if "'" in artist:  # to avoid conflict with sql quote
-                            artist = artist.replace("'", '')
-                        if "'" in title:
-                            title = title.replace("'", ' ')
-
-                        for word in removing_word:
-                            title = title.replace(word, '')
-                        hm = song.find('time').text
-                        hm_nat = float(hm.replace(':', '.'))
-                        played_h_m = hm.split(':')
-                        played_h = played_h_m[0]
-                        played_m = played_h_m[1]
-
-                        if soup.find('div', {
-                            'class': 'playlist-program-details'}):  # because of p3 2021/02/ 09 and 10 natradio issue fixed
-                            nat = soup.find('div', {'class': 'playlist-program-details'}).text.strip()
-                            nat = nat.lower()
-                            if 'i dag' not in nat:
-                                day = nat[4:6]
-                                dt = today.replace(day=int(day), hour=int(played_h), minute=int(played_m), second=0,
-                                                   microsecond=0)
-                            if 00.00 < hm_nat < 05.00 and 'i dag' in nat:
-                                _day = str(link_url).split('playlister/' + linkName + '/')[1]
-                                _day = _day[8:10]
-                                dt = today.replace(day=int(_day), hour=int(played_h), minute=int(played_m), second=0,
-                                                   microsecond=0)
-                            if 05.00 < hm_nat < 24.00 and 'i dag' in nat:
-                                _day = str(link_url).split('playlister/' + linkName + '/')[1]
-                                _day = _day[8:10]
-                                dt = today.replace(day=int(_day), hour=int(played_h), minute=int(played_m), second=0,
-                                                   microsecond=0)
-                        else:
-                            dt = today.replace(hour=int(played_h), minute=int(played_m), second=0, microsecond=0)
-                        if runType > 1:
-                            audioName = artist + ' - ' + title + '.mp3'
-                            fileName = str(audioName.lower())
                             try:
-                                if is_exist(fileName):
-                                    if is_playlist(title, artist, dt, data_name):
-                                        break
-                                    try:
-                                        playlist_to_Fir(title, artist, dt, fileName, data_name)
-                                    except Exception as e:
-                                        print('')
-                                if is_exist(fileName) and is_playlist(title, artist, dt, data_name):
-                                    break
-                                else:
-                                    tube_artist = artist.split(' ')
-                                    tube_title = title.split(' ')
-                                    play_link = 'https://www.youtube.com/results?search_query='
-                                    for title_word in tube_title:
-                                        play_link = play_link + title_word + '+'
-                                    for artist_word in tube_artist:
-                                        play_link = play_link + artist_word + '+'
-
-                                    play_link = play_link[:-1]
-                                    options = webdriver.ChromeOptions()
-                                    browser = webdriver.Chrome(executable_path="C:\chromedriver.exe", options=options)
-                                    browser.get(play_link)
-                                    WebDriverWait(browser, 10).until(
-                                        expected_conditions.visibility_of_element_located((By.XPATH,
-                                                                                           '//*[@id="yDmH0d"]/c-wiz/div/div/div/div[2]/div[1]/div[4]/form/div[1]/div/button/div[2]'))).click()
-
-                                    urltxt = browser.page_source
-                                    soupTube = bs.BeautifulSoup(urltxt, 'html.parser')
-                                    hrefs = soupTube.find_all('a', {
-                                        'class': 'yt-simple-endpoint style-scope ytd-video-renderer'})[0]['href']
-                                    To_play_url = 'https://www.youtube.com' + hrefs
-                                    os.chdir("D:/TempAudFiles")
-
-                                    audio_downloder = YoutubeDL({'format': 'bestaudio/best'})
-                                    audio_downloder.extract_info(To_play_url)
-                                    downloaded_temp = os.listdir("D:\TempAudFiles")
-                                    for file in downloaded_temp:
-                                        if file.lower().startswith(artist[:6].lower()) or file.lower().startswith(
-                                                title.lower()):
-                                            os.rename(file, fileName.lower())
-                                            file_directory = "D:\AudFiles" + "\\" + fileName
-                                            dowloaded = os.listdir("D:\AudFiles")
-                                            if fileName not in dowloaded:
-                                                shutil.move(('D:/TempAudFiles/' + fileName.lower()), "D:\AudFiles")
-                                            downloaded_temp = os.listdir("D:\TempAudFiles")
-                                            for file in downloaded_temp:
-                                                os.remove(file)
-                                    try:
-                                        save_audio(fileName, file_directory)
-                                    except Exception as e:
-                                        print(e)
-                                    try:
-                                        playlist_to_Fir(title, artist, dt, fileName, data_name)
-                                    except Exception as e:
-                                        print('')
-
-                                    songs_saved += 1
-
-                                    print('played at: ', dt, 'artist: ' + artist + ' -- ', 'title: ' + title + ' -- ',
-                                          ' -- ', 'radio name: ' + radioName)
+                                artist = p4_getArtist(song)
+                                title = p4_getTitle(song)
+                                dt = p4_getDate(song, soup, today, link_url, linkName)
+                                radio_gothering_data(artist, title, dt, runType, data_name)
                             except Exception as e:
                                 print(e)
-
-                                print('played at: ', dt, 'artist: ' + artist + ' -- ', 'title: ' + title + ' -- ',
-                                      ' -- ', 'radio name: ' + radioName)
-                            else:
-                                print('song: ' + title + ' - ' + artist + ' is already exists')
-                        else:
-                            songs_found += 1
-                            print('played at: ', dt, 'artist: ' + artist + ' -- ', 'title: ' + title + ' -- ',
-                                  ' -- ', 'radio name: ' + radioName)
-                    except Exception as e:
-                        print(e)
         except Exception as e:
             print(e)
         today = today - datetime.timedelta(days=1)
-
-
-try:
-    scrap_P4_bornholm()
-    print("songs_found", songs_found)
-except Exception as e:
-    print("songs_found", songs_found)
