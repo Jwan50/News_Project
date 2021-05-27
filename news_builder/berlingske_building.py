@@ -1,7 +1,6 @@
 import bs4 as bs
 import datetime
 import requests
-
 from news.concrete_news_builder import Concrete_news_builder
 from news_queries import news_saving, app_init_news
 
@@ -58,11 +57,11 @@ class ber_concretenews_building(Concrete_news_builder):
                         if 'Fold sammen' in content:
                             content = content.split('Fold sammen')
                             content = content[0]
+                    news = super().setCategory(category).setHeadline(headline).setContent(content).setDate(
+                        date).setProvider(provider=self.provider).build()
 
                     if self.runType > 1:
                         init_app = app_init_news.Init_news()
-                        news = super().setCategory(category).setHeadline(headline).setContent(content).setDate(
-                            date).setProvider(provider=self.provider).build()
 
                         news_saving_ber = news_saving.news_saving(news.provider, news.headline, news.content, news.date,
                                                                   news.category, self.data_name)

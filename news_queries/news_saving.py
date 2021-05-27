@@ -12,14 +12,15 @@ class news_saving:
         self.data_name = data_name
 
     def news_save(self):
-        try:
-            db = firestore.client()
-            if_exists = db.collection('altinget').where('headline', '==', self.headline).where('category', '==',
+
+        db = firestore.client()
+        if_exists = db.collection('altinget').where('headline', '==', self.headline).where('category', '==',
                                                                                                self.category).where(
                 'date', '==', self.date).get()
-            if if_exists:
-                return True
-            else:
+        if if_exists:
+            return True
+        else:
+            try:
                 data = {'category': self.category,
                         'content': self.content,
                         'date': self.date,
@@ -27,5 +28,5 @@ class news_saving:
                         'provider': self.provider
                         }
                 db.collection(self.data_name).add(data)
-        except Exception as e:
-            print('Problem sending data to: ' + self.data_name)
+            except Exception as e:
+                print('Problem sending data to: ' + self.data_name)

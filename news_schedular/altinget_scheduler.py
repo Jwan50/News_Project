@@ -1,31 +1,17 @@
 import schedule
-import time
-
 from news_builder.altinget_building import alt_concretenews_building
 
+runEvery = 3600
 
-class altinget_scheduler:
-    def __init__(self):
-        self.runType = 2
 
-    def run_altinget(self):
-        try:
-            print('Altinget is running every 20 seconds ... ')
-            altin = alt_concretenews_building(self.runType)
-            altin.getNews_altinget()
+def run_altinget():
+    runType = 2
+    alt = alt_concretenews_building(runType)
+    alt.getNews_altinget()
+    print('Altinget is running every {} seconds ... '.format(runEvery))
 
-        except Exception as e:
 
-            print('Problem running Altinget scheduler: ', e)
-
-    schedule.every(10).seconds.do(run_altinget)
-
+schedule.every(runEvery).seconds.do(run_altinget)
 
 while True:
-    sched = altinget_scheduler()
-    try:
-        sched.run_altinget()
-        schedule.run_pending()
-        time.sleep(1)
-    except Exception as e:
-        print(e)
+    schedule.run_pending()
