@@ -3,7 +3,7 @@ import time
 import schedule
 from news_scraping.berlingske import scrape_berlingske
 
-runEvery = 5
+runEvery = 2
 runType = 1
 
 
@@ -16,7 +16,7 @@ def run_berlingski():
         print('Problem running Berlingski scheduler: ', e)
 
 
-schedule.every(runEvery).seconds.do(run_berlingski)
+schedule.every(runEvery).hours.do(run_berlingski)
 
 while True:
     schedule.run_pending()

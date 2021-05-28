@@ -2,7 +2,7 @@ import schedule
 from radio_scrapers.p3_radio_scraper import scrap_P3
 scrape_back_days = 2
 runType = 2
-runEvery = 20
+runEvery = 1
 
 
 def run_P3():
@@ -13,7 +13,7 @@ def run_P3():
         print('Problem running run_P3 scheduler: ', e)
 
 
-schedule.every(10).seconds.do(run_P3)
+schedule.every(runEvery).day.do(run_P3)
 
 while True:
     schedule.run_pending()

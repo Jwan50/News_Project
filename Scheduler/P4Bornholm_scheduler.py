@@ -3,7 +3,7 @@ from radio_scrapers.p4_Bornholm_radio_scraper import scrap_P4_bornholm
 
 scrape_back_days = 2
 runType = 2
-runEvery = 5
+runEvery = 1
 
 
 def run_P4_Bornholm():
@@ -15,7 +15,7 @@ def run_P4_Bornholm():
         print('Problem running P4 Bornholm scheduler: ', e)
 
 
-schedule.every(runEvery).seconds.do(run_P4_Bornholm)
+schedule.every(runEvery).day.do(run_P4_Bornholm)
 
 while True:
     schedule.run_pending()
