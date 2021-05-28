@@ -13,18 +13,28 @@ def radio_gathering_data(artist, title, dt, runType, data_name):
             file_directory = "D:\AudFiles" + "\\" + fileName
             fileName = str(audioName.lower())
 
-            if is_audio_exist(artist, title, dt, data_name, runType, fileName, file_directory):
-                if is_playlist_exist(title, artist, dt, fileName, data_name):
-                    save_audio(artist, title, fileName, file_directory)
-                    if save_audio:
-                        print('Audio: ', ' -', artist, ' -', title, ' -', dt, 'saved')
+            if is_audio_exist(artist, title, dt, data_name, runType, fileName, file_directory) and is_playlist_exist(
+                    title, artist, dt, fileName, data_name):
+                save_audio(artist, title, fileName, file_directory)
+                if save_audio:
+                    print('Audio: ', ' -', artist, ' -', title, ' -', dt, 'saved')
+                else:
+                    return
 
-                    playlist_to_Fir(title, artist, dt, fileName, data_name)
+                playlist_to_Fir(title, artist, dt, fileName, data_name)
+                if playlist_to_Fir:
+                    print('Playlist: ', ' -', artist, ' -', title, ' -', dt, 'saved')
+            if not is_audio_exist(artist, title, dt, data_name, runType, fileName, file_directory) and is_playlist_exist(
+                    title, artist, dt, fileName, data_name):
+                playlist_to_Fir(title, artist, dt, fileName, data_name)
+                if playlist_to_Fir:
+                    print('Playlist: ', ' -', artist, ' -', title, ' -', dt, 'saved')
 
-                    if playlist_to_Fir:
-                        print('Playlist: ', ' -', artist, ' -', title, ' -', dt, 'saved')
-
-            else:
-                return
+            if is_audio_exist(artist, title, dt, data_name, runType, fileName,
+                                  file_directory) and not is_playlist_exist(
+                    title, artist, dt, fileName, data_name):
+                save_audio(artist, title, fileName, file_directory)
+                if save_audio:
+                    print('Audio: ', ' -', artist, ' -', title, ' -', dt, 'saved')
         else:
             radio_gathering_data(artist, title, dt, runType, data_name)
