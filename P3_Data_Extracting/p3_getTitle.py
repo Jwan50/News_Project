@@ -7,7 +7,7 @@ def p3_getTitle(song):
         return
 
 
-    if "'" in title:
+    if "'" in title:  # to avoid conflict with sql quote
         title = title.replace("'", ' ')
 
     for word in removing_word:
