@@ -4,7 +4,7 @@ import requests
 from Altinget_Data_Extracting.altinget_getContent import altinget_getContent
 from Altinget_Data_Extracting.altinget_getHeadline import altinget_getHeadline
 from Altinget_Data_Extracting.altinget_getDate import altinget_getDate
-from news_data_queries.news_gothering_data import news_gothering_data
+from news_data_queries.news_gathering_data import news_gothering_data
 
 provider = 'altinget'
 categories = {'kommunal'}

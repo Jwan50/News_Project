@@ -1,6 +1,5 @@
 import schedule
-
-
+from radio_scrapers.p3_radio_scraper import scrap_P3
 scrape_back_days = 2
 runType = 2
 runEvery = 20

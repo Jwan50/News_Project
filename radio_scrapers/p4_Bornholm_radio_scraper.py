@@ -4,7 +4,7 @@ import requests
 from P4_Data_Extracting.p4_getTitle import p4_getTitle
 from P4_Data_Extracting.p4_getArtist import p4_getArtist
 from P4_Data_Extracting.p4_getDate import p4_getDate
-from radio_data_queries.radio_gothering_data import radio_gothering_data
+from radio_data_queries.radio_gothering_data import radio_gathering_data
 
 radioName = 'p4 bornholm'
 linkName = 'p4bornholm'
@@ -45,7 +45,7 @@ def scrap_P4_bornholm(scrape_back_days, runType):
                                 artist = p4_getArtist(song)
                                 title = p4_getTitle(song)
                                 dt = p4_getDate(song, soup, today, link_url, linkName)
-                                radio_gothering_data(artist, title, dt, runType, data_name)
+                                radio_gathering_data(artist, title, dt, runType, data_name)
                             except Exception as e:
                                 print(e)
         except Exception as e:

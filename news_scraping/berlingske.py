@@ -4,7 +4,7 @@ import requests
 from Berlingske_Data_Extracting.berlingske_getContent import berlingske_getContent
 from Berlingske_Data_Extracting.berlingske_getHeadline import berlingske_getHeadline
 from Berlingske_Data_Extracting.berlingske_getDate import berlingske_getDate
-from news_data_queries.news_gothering_data import news_gothering_data
+from news_data_queries.news_gathering_data import news_gothering_data
 
 provider = 'Berlingske'
 categories = {'politik', 'sport', 'internationalt', 'samfund'}

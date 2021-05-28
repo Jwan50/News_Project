@@ -4,7 +4,7 @@ import requests
 from P3_Data_Extracting.p3_getTitle import p3_getTitle
 from P3_Data_Extracting.p3_getArtist import p3_getArtist
 from P3_Data_Extracting.p3_getDate import p3_getDate
-from radio_data_queries.radio_gothering_data import radio_gothering_data
+from radio_data_queries.radio_gothering_data import radio_gathering_data
 
 radioName = 'p3'
 linkName = 'p3'
@@ -41,7 +41,7 @@ def scrap_P3(scrape_back_days, runType):
                             artist = p3_getArtist(song)
                             title = p3_getTitle(song)
                             dt = p3_getDate(song, soup, today, link_url, linkName)
-                            radio_gothering_data(artist, title, dt, runType, data_name)
+                            radio_gathering_data(artist, title, dt, runType, data_name)
                         except Exception as e:
                             print(e)
         except Exception as e:
