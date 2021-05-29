@@ -3,9 +3,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 
 
-def test_getNews_berlingske(headline):
-    cred = credentials.Certificate(r"C:\Users\gwan1\PycharmProjects\News_Project\serviceAccountKey.json")
-    firebase_admin.initialize_app(cred)
+def test_getNews_berlingske(headline, provider):
     db = firestore.client()
     headline_scraped = str(headline)
     docs = db.collection('berlingske').where('headline', '==', headline).stream()

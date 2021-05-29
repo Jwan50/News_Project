@@ -5,9 +5,10 @@ from Altinget_Data_Extracting.altinget_getContent import altinget_getContent
 from Altinget_Data_Extracting.altinget_getHeadline import altinget_getHeadline
 from Altinget_Data_Extracting.altinget_getDate import altinget_getDate
 from news_data_queries.news_gathering_data import gather_data
+from tests.test_headline import test_headline
 
 provider = 'altinget'
-categories = {'kommunal'}
+categories = {'kommunal', 'boern', 'eu', 'kultur', 'arbejdsmarked', 'arktis', 'by', 'civilsamfund', 'digital'}
 data_name = 'altinget'
 
 
@@ -27,8 +28,15 @@ def scrape_altinget(runType):
                     continue
                 headline = altinget_getHeadline(header)
                 dt = altinget_getDate(header, scrap_date)
+                if not dt:
+                    continue
                 gather_data(headline, content, dt, provider, category, runType, data_name)
                 print('Provider; ', provider, 'Headline: ', headline, ' Content: ', content, ' Date: ', dt)
+                test_headline(headline, provider)
+                if test_headline:
+                    print('Tesing Equal Headline: succeeded')
+                else:
+                    print('Tesing Equal Headline: failed')
 
         except Exception as e:
             print(e)

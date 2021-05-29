@@ -5,6 +5,7 @@ from Berlingske_Data_Extracting.berlingske_getContent import berlingske_getConte
 from Berlingske_Data_Extracting.berlingske_getHeadline import berlingske_getHeadline
 from Berlingske_Data_Extracting.berlingske_getDate import berlingske_getDate
 from news_data_queries.news_gathering_data import gather_data
+from tests.test_headline import test_headline
 
 provider = 'Berlingske'
 categories = {'politik', 'sport', 'internationalt', 'samfund'}
@@ -30,6 +31,10 @@ def scrape_berlingske(runType):
                     continue
                 gather_data(headline, content, dt, provider, category, runType, data_name)
                 print('Provider; ', provider, ' -Headline: ', headline, ' -Content: ', content, ' -Date: ', dt)
-
+                test_headline(headline, data_name)
+                if test_headline:
+                    print('Tesing Equal Headline: succeeded')
+                else:
+                    print('Tesing Equal Headline: failed')
         except Exception as e:
             print(e)

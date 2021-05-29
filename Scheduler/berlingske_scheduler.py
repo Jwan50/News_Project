@@ -3,8 +3,8 @@ import time
 import schedule
 from news_scraping.berlingske import scrape_berlingske
 
-runEvery = 2
-runType = 1
+runEvery = 0
+runType = 2
 
 
 def run_berlingski():
