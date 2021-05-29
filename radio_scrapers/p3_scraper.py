@@ -4,7 +4,7 @@ import requests
 from P3_Data_Extracting.p3_getTitle import p3_getTitle
 from P3_Data_Extracting.p3_getArtist import p3_getArtist
 from P3_Data_Extracting.p3_getDate import p3_getDate
-from radio_data_queries.radio_gothering_data import radio_gathering_data
+from radio_data_queries.radio_gathering_data import radio_gathering_data
 
 radioName = 'p3'
 linkName = 'p3'
