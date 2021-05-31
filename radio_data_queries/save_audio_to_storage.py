@@ -12,14 +12,14 @@ from selenium.webdriver.common.by import By
 
 def save_audio(artist, title, fileName, file_directory):
     if not len(firebase_admin._apps):
-        cred = credentials.Certificate(r"C:\Users\gwan1\PycharmProjects\News_Project\serviceAccountKey.json")
+        cred = credentials.Certificate(r"C:\Users\gwan1\PycharmProjects\News_Project Functional\serviceAccountKey.json")
         firebase_admin.initialize_app(cred)
     firestore.client()
     bucket = storage.bucket()
     blob = bucket.blob(fileName)
     tube_artist = artist.split(' ')
     tube_title = title.split(' ')
-    play_link = 'https://www.youtube.com/results?search_query='
+    play_link = 'https://www.youtube.com/results?search_query= '
     for title_word in tube_title:
         play_link = play_link + title_word + '+'
     for artist_word in tube_artist:
