@@ -4,7 +4,7 @@ import requests
 from Altinget_Data_Extracting.altinget_getContent import altinget_getContent
 from Altinget_Data_Extracting.altinget_getHeadline import altinget_getHeadline
 from Altinget_Data_Extracting.altinget_getDate import altinget_getDate
-from news_data_queries.news_gathering_data import gather_data
+from News_Data_Queries.news_gathering_data import gather_data
 from tests.test_headline import test_headline
 
 provider = 'altinget'

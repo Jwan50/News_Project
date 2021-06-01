@@ -1,8 +1,8 @@
-from radio_data_queries.app_init_radio import is_app_init_radio
-from radio_data_queries.if_audio_exist import is_audio_exist
-from radio_data_queries.if_playlist_exist import is_playlist_exist
-from radio_data_queries.playlist_saving import playlist_to_Fir
-from radio_data_queries.save_audio_to_storage import save_audio
+from Radio_Data_Queries.app_init_radio import is_app_init_radio
+from Radio_Data_Queries.if_audio_exist import is_audio_exist
+from Radio_Data_Queries.if_playlist_exist import is_playlist_exist
+from Radio_Data_Queries.playlist_saving import playlist_to_Fir
+from Radio_Data_Queries.save_audio_to_storage import save_audio
 
 
 def radio_gathering_data(artist, title, dt, runType, data_name):

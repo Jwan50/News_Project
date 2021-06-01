@@ -1,7 +1,7 @@
 import time
 
 import schedule
-from news_scraping.berlingske import scrape_berlingske
+from News_Scraping.berlingske import scrape_berlingske
 
 runEvery = 0
 runType = 2

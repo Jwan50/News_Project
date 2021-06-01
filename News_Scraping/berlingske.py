@@ -4,7 +4,7 @@ import requests
 from Berlingske_Data_Extracting.berlingske_getContent import berlingske_getContent
 from Berlingske_Data_Extracting.berlingske_getHeadline import berlingske_getHeadline
 from Berlingske_Data_Extracting.berlingske_getDate import berlingske_getDate
-from news_data_queries.news_gathering_data import gather_data
+from News_Data_Queries.news_gathering_data import gather_data
 from tests.test_headline import test_headline
 
 provider = 'Berlingske'
@@ -31,7 +31,7 @@ def scrape_berlingske(runType):
                 dt = berlingske_getDate(header, scrap_date)                # Passing header and scrap_date as dt parameter to getDate function in other file
                 if not dt:
                     continue
-                gather_data(headline, content, dt, provider, category, runType, data_name)  # Putting all together and passing all parameters to gather_data file
+                gather_data(headline, content, dt,category, runType, data_name)  # Putting all together and passing all parameters to gather_data file
                 print('Provider; ', provider, ' -Headline: ', headline, ' -Content: ', content, ' -Date: ', dt)
                 test_headline(headline, data_name)                          # To do test for the headline
                 if test_headline:

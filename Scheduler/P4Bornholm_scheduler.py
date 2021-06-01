@@ -1,5 +1,5 @@
 import schedule
-from radio_scrapers.p4_scraper import scrap_P4
+from Radio_Scrapers.p4_scraper import scrap_P4
 
 scrape_back_days = 2
 runType = 2

@@ -4,7 +4,7 @@ import requests
 from P4_Data_Extracting.p4_getTitle import p4_getTitle
 from P4_Data_Extracting.p4_getArtist import p4_getArtist
 from P4_Data_Extracting.p4_getDate import p4_getDate
-from radio_data_queries.radio_gathering_data import radio_gathering_data
+from Radio_Data_Queries.radio_gathering_data import radio_gathering_data
 
 radioName = 'p4 bornholm'
 linkName = 'p4bornholm'

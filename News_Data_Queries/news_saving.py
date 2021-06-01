@@ -1,14 +1,14 @@
 from firebase_admin import firestore
 
 
-def news_save(provider, headline, content, dt, category, data_name):
+def news_save(headline, content, dt, category, data_name):
     try:
         db = firestore.client()
         data = {'category': category,
                 'content': content,
                 'date': dt,
                 'headline': headline,
-                'provider': provider
+                'provider': data_name
                 }
         db.collection(data_name).add(data)                  # Adding the news to the firebase database
         if news_save:

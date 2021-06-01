@@ -1,5 +1,5 @@
 import schedule
-from news_scraping.altinget import scrape_altinget
+from News_Scraping.altinget import scrape_altinget
 
 runEvery = 0    # To control the frequency of running
 runType = 2     # runType is optional: 1 for only printing the scraper result, 2 for printing and saving the data to firebase
