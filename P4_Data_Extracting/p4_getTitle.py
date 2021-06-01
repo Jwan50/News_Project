@@ -4,15 +4,15 @@ removing_word = {'(Radio Edit)', '(Remix)', '(Edit)', '(Single Edit)',
 
 
 def p4_getTitle(song):
-    if song.find('a').text.strip():  # to insure that title exists
+    if song.find('a').text.strip():             # to insure that title exists
         title = song.find('a').text.strip()
     else:
         return
 
     if "'" in title:
-        title = title.replace("'", ' ')
+        title = title.replace("'", ' ')        # To neglect ' apostrophe as it caused data queries issues
 
-    for word in removing_word:
+    for word in removing_word:                 # To remove the above un wanted texts
         title = title.replace(word, '')
 
     return title

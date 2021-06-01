@@ -2,13 +2,13 @@
 
 def p4_getDate(song, soup, today, link_url, linkName):
     hm = song.find('time').text
-    hm_nat = float(hm.replace(':', '.'))
-    played_h_m = hm.split(':')
-    played_h = played_h_m[0]
-    played_m = played_h_m[1]
+    hm_nat = float(hm.replace(':', '.'))            # initiating float value of hm of night time to be compared after
+    played_h_m = hm.split(':')                      # Splitting to separate h and m
+    played_h = played_h_m[0]                        # First index for h
+    played_m = played_h_m[1]                        # Secodn index for m
 
-    if soup.find('div', {
-        'class': 'playlist-program-details'}):  # because of p3 2021/02/ 09 and 10 natradio issue fixed
+    if soup.find('div', {                           # Below if statements are to fix the issue of getting different time value based on time of day
+        'class': 'playlist-program-details'}):      # because of p3 2021/02/ 09 and 10 natradio issue fixed.
         nat = soup.find('div', {'class': 'playlist-program-details'}).text.strip()
         nat = nat.lower()
         if 'i dag' not in nat and 'P4 BORNHOLM'.lower() in nat:
