@@ -1,0 +1,15 @@
+
+
+To run the project:
+
+1- In Scheduler folder, select one of the file to run
+
+2- Set runType:
+    1 For only printing the scraper result
+    2 For printing and saving the data to database
+
+3- Set runEvery: give it a number, choose a parameters for every.
+   schedule.every(runEvery).hours.do(run_altinget)
+
+4- press run button
+
