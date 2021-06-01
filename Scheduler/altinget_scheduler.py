@@ -1,8 +1,8 @@
 import schedule
 from news_scraping.altinget import scrape_altinget
 
-runEvery = 0
-runType = 2  # runType is optional: 1 for only printing the scraper result, 2 for printing and saving the data to firebase
+runEvery = 0    # To control the frequency of running
+runType = 2     # runType is optional: 1 for only printing the scraper result, 2 for printing and saving the data to firebase
 
 
 def run_altinget():
@@ -14,7 +14,7 @@ def run_altinget():
         print('Problem running Altinget scheduler: ', e)
 
 
-schedule.every(runEvery).hours.do(run_altinget)
+schedule.every(runEvery).hours.do(run_altinget)     # To pass runEvery to every()
 
 while True:
     schedule.run_pending()

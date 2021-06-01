@@ -10,7 +10,7 @@ def news_save(provider, headline, content, dt, category, data_name):
                 'headline': headline,
                 'provider': provider
                 }
-        db.collection(data_name).add(data)
+        db.collection(data_name).add(data)                  # Adding the news to the firebase database
         if news_save:
             print('Category: ', category, ' -Headline', headline, ' -Content', content, '- Date', dt)
 

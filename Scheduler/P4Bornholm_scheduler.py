@@ -3,7 +3,7 @@ from radio_scrapers.p4_scraper import scrap_P4
 
 scrape_back_days = 2
 runType = 2
-runEvery = 2
+runEvery = 0
 
 
 def run_P4_Bornholm():
