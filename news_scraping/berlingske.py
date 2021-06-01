@@ -33,7 +33,7 @@ def scrape_berlingske(runType):
                     continue
                 gather_data(headline, content, dt, provider, category, runType, data_name)  # Putting all together and passing all parameters to gather_data file
                 print('Provider; ', provider, ' -Headline: ', headline, ' -Content: ', content, ' -Date: ', dt)
-                test_headline(headline, data_name)
+                test_headline(headline, data_name)                          # To do test for the headline
                 if test_headline:
                     print('Tesing Equal Headline: succeeded')
                 else:

@@ -13,8 +13,8 @@ data_name = 'altinget'
 
 
 def scrape_altinget(runType):
-    urlbase = "https://api.altinget.dk"                         # The basic URL link
-    scrap_date = datetime.datetime.now()                        # Today's date now
+    urlbase = "https://api.altinget.dk"                                                                 # The basic URL link
+    scrap_date = datetime.datetime.now()                                                                 # Today's date now
     for category in categories:
         urlbase_category = urlbase + '/' + category + '/artikel.aspx'   # Passing category to the URL
         try:
@@ -32,7 +32,7 @@ def scrape_altinget(runType):
                     continue
                 gather_data(headline, content, dt, provider, category, runType, data_name)              # Putting all together and passing all parameters to gather_data file
                 print('Provider; ', provider, 'Headline: ', headline, ' Content: ', content, ' Date: ', dt)
-                test_headline(headline, provider)                                                       # Do test of the scraped news
+                test_headline(headline, provider)                                                       # To do test for the headline
                 if test_headline:
                     print('Tesing Equal Headline: succeeded')
                 else:
